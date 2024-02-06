@@ -24,25 +24,24 @@ namespace Jackett.Common.Indexers
         public override string Id => "cinecalidad";
         public override string Name => "Cinecalidad";
         public override string Description => "Películas Full UHD/HD en Latino Dual.";
-        public override string SiteLink { get; protected set; } = "https://ww.cinecalidad.foo/";
+        public override string SiteLink { get; protected set; } = "https://cinecalidad.fi/";
         public override string[] LegacySiteLinks => new[]
         {
-            "https://cinecalidad.mrunblock.icu/",
-            "https://v3.cine-calidad.com/",
-            "https://www.cine-calidad.com/",
-            "https://www.cinecalidad.lat/",
-            "https://cinecalidad.dev/",
-            "https://cinecalidad.ms/",
-            "https://www3.cinecalidad.ms/",
-            "https://ww1.cinecalidad.ms/",
-            "https://www.cinecalidad.gs/",
-            "https://www.cinecalidad.tf/",
-            "https://wvw.cinecalidad.tf/",
-            "https://vww.cinecalidad.tf/",
-            "https://wwv.cinecalidad.tf/",
-            "https://www.cinecalidad.foo/",
-            "https://vww.cinecalidad.foo/",
-            "https://vw.cinecalidad.foo/",
+            "https://wwv.cinecalidad.foo/",
+            "https://wv.cinecalidad.foo/",
+            "https://vwv.cinecalidad.foo/",
+            "https://wzw.cinecalidad.foo/",
+            "https://v2.cinecalidad.foo/",
+            "https://www.cinecalidad.so/",
+            "https://wvw.cinecalidad.so/",
+            "https://vww.cinecalidad.so/",
+            "https://wwv.cinecalidad.so/",
+            "https://vvv.cinecalidad.so/",
+            "https://ww.cinecalidad.so/",
+            "https://w.cinecalidad.so/",
+            "https://wv.cinecalidad.so/",
+            "https://vvvv.cinecalidad.so/",
+            "https://wvvv.cinecalidad.so/",
         };
         public override string Language => "es-419";
         public override string Type => "public";
@@ -141,7 +140,7 @@ namespace Jackett.Common.Indexers
 
             try
             {
-                var dom = await parser.ParseDocumentAsync(results.ContentString);
+                using var dom = await parser.ParseDocumentAsync(results.ContentString);
 
                 var downloadLink = link.Query.Contains("type=4k")
                     ? dom.QuerySelector("ul.links a:contains('Bittorrent 4K')")
@@ -167,8 +166,10 @@ namespace Jackett.Common.Indexers
                 protectedLink = GetAbsoluteUrl(protectedLink);
 
                 results = await RequestWithCookiesAsync(protectedLink);
-                dom = parser.ParseDocument(results.ContentString);
-                var magnetUrl = dom.QuerySelector("a[href^=magnet]").GetAttribute("href");
+
+                using var document = parser.ParseDocument(results.ContentString);
+                var magnetUrl = document.QuerySelector("a[href^=magnet]").GetAttribute("href");
+
                 return await base.Download(new Uri(magnetUrl));
             }
             catch (Exception ex)
@@ -186,7 +187,7 @@ namespace Jackett.Common.Indexers
             try
             {
                 var parser = new HtmlParser();
-                var dom = parser.ParseDocument(response.ContentString);
+                using var dom = parser.ParseDocument(response.ContentString);
 
                 var rows = dom.QuerySelectorAll("article:has(a.absolute):has(img.rounded)");
 

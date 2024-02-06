@@ -158,9 +158,14 @@ search:
         img.pro_2up: 2
         "*": 1
     minimumseedtime:
-      # 14 days (as seconds = 14 x 24 x 60 x 60)
-      text: 1209600
+      case:
+        img.hitandrun: 1209600 # 14 days (as seconds = 14 x 24 x 60 x 60)
+        "*": 604800 # 7 days (as seconds = 7 x 24 x 60 x 60)
+    minimumratio:
+      case:
+        img.hitandrun: 3.0
+        "*": 2.0
     description:
       selector: td:nth-child(2)
       remove: a, b, font, img, span
-# NexusPHP v1.8.7 2023-08-22
+# NexusPHP v1.8.8 2023-09-25

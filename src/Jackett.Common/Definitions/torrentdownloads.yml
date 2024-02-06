@@ -5,26 +5,14 @@ description: "Torrent Downloads (TD) is a Public torrent site for all kinds of c
 language: en-US
 type: public
 encoding: UTF-8
-followredirect: true
 links:
   - https://www.torrentdownloads.pro/
-  - https://torrentdownloads.unblockit.esq/
-  - https://torrentdownloads.mrunblock.bond/
+  - https://torrentdownloads.unblockit.date/
   - https://torrentdownloads.unblockninja.com/
-  - https://torrentdownloads.nocensor.cloud/
+  - https://torrentdownloads.ninjaproxy1.com/
+  - https://torrentdownloads.proxyninja.org/
 legacylinks:
   - https://www.torrentdownloads.me/
-  - https://torrentdownloads.nocensor.work/
-  - https://torrentdownloads.nocensor.biz/
-  - https://torrentdownloads.unblockit.name/
-  - https://torrentdownloads.nocensor.sbs/
-  - https://torrentdownloads.unblockit.ist/
-  - https://torrentdownloads.unblockit.bet/
-  - https://torrentdownloads.unblockit.cat/
-  - https://torrentdownloads.unblockit.nz/
-  - https://torrentdownloads.nocensor.world/
-  - https://torrentdownloads.unblockit.page/
-  - https://torrentdownloads.unblockit.pet/
   - https://torrentdownloads.nocensor.lol/
   - https://torrentdownloads.unblockit.ink/
   - https://torrentdownloads.unblockit.bio/
@@ -38,6 +26,12 @@ legacylinks:
   - https://torrentdownloads.unblockit.rsvp/
   - https://torrentdownloads.nocensor.click/
   - https://torrentdownloads.unblockit.vegas/
+  - https://torrentdownloads.unblockit.esq/
+  - https://torrentdownloads.unblockit.zip/
+  - https://torrentdownloads.unblockit.foo/
+  - https://torrentdownloads.unblockit.ing/
+  - https://torrentdownloads.mrunblock.bond/
+  - https://torrentdownloads.nocensor.cloud/
 
 caps:
   categorymappings:

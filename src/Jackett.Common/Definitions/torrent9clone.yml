@@ -8,22 +8,11 @@ encoding: UTF-8
 followredirect: true
 # to fetch current domain use https://www.protege-torrent.com/Torrent9
 links:
-  - https://www.torrent9.gs/
-  - https://torrent9.nocensor.cloud/
-  - https://torrent9.mrunblock.bond/
+  - https://www.torrent9.kim/
+  - https://torrent9.unblockninja.com/
 legacylinks:
-  - https://ww1.torrent9.re/
-  - http://ww2.torrent9.re/
-  - https://ww2.torrent9.re/
-  - http://ww5.torrent9.re/
-  - https://ww5.torrent9.re/
-  - https://torrent9.mrunblock.guru/ # redirects to 1337x
-  - https://torrent9.cm/
-  - http://www.torrent9.cm/
-  - https://www.torrent9.cm/
-  - https://torrent9.nocensor.art/
-  - https://torrent9.mrunblock.life/
-  - https://www.torrent9.fi/
+  - https://www.protege-liens.net/
+  - https://www.rantop.org/
   - https://www.torrent9.wtf/
   - https://www.torrent9.sc/
   - https://torrent9.nocensor.click/
@@ -31,11 +20,23 @@ legacylinks:
   - https://ww2.torrent9.moe/
   - https://wwv.torrent9.moe/
   - https://www.torrent9.pro/
+  - https://www.torrent9.gs/
+  - https://www.torrent9.ps/
+  - https://www.torrent9.ms/
+  - https://www.torrent9.ink/
+  - https://www.torrent9.sk/
+  - https://www.torrent9.rs/
+  - https://www.torrent9.pm/
+  - https://www.torrent9.st/
+  - https://www.torrent9.boo/
+  - https://torrent9.nocensor.cloud/
+  - https://torrent9.mrunblock.bond/
 
 caps:
   categorymappings:
     - {id: Films, cat: Movies, desc: "Movies"}
     - {id: Animes, cat: TV/Anime, desc: "Anime"}
+    - {id: Documentaires, cat: TV/Documentary, desc: "Documentaires"}
     - {id: Séries, cat: TV, desc: "TV"}
     - {id: Musiques, cat: Audio, desc: "Music"}
     - {id: Ebooks, cat: Books, desc: "Books"}
@@ -43,7 +44,9 @@ caps:
     - {id: Logiciels, cat: PC, desc: "Software"}
     - {id: Jeux-PC, cat: PC/Games, desc: "PC Games"}
     - {id: Jeux-Consoles, cat: Console/XBox 360, desc: "Console Games"}
-    - {id: Porno, cat: XXX, desc: "XXX"}
+    - {id: Porno, cat: XXX, desc: "Porno"}
+    - {id: Spectacles, cat: TV/Other, desc: "Spectacles"}
+    - {id: Sports, cat: TV/Sport, desc: "Sports"}
 
   modes:
     search: [q]
@@ -89,7 +92,7 @@ download:
 
 search:
   paths:
-    - path: "{{ if .Keywords }}/recherche/{{ .Keywords }}{{ else }}{{ end }}"
+    - path: "{{ if .Keywords }}recherche/{{ .Keywords }}{{ else }}derniers{{ end }}"
   keywordsfilters:
     # if searching for season packs swith S01 to saison 1 #9712
     - name: re_replace

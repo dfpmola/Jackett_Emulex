@@ -1,7 +1,7 @@
 ---
 id: kinozal
 name: Kinozal
-description: "Kinozal is a RUSSIAN Semi-Private Torrent Tracker for MOVIES / TV / MUSIC"
+description: "Kinozal is a RUSSIAN Semi-Private Torrent Tracker for MOVIES / TV / MUSIC. This indexer uses torrents."
 language: ru-RU
 type: semi-private
 encoding: windows-1251
@@ -17,7 +17,7 @@ caps:
   categorymappings:
     # TV
     - {id: 1001, cat: TV, desc: "All TV Shows"}
-    - {id: 45, cat: TV, desc: "Russian TV Series"}
+    - {id: 45, cat: TV, desc: "TV Series - Russian"}
     - {id: 46, cat: TV, desc: "TV Series"}
     # Movies
     - {id: 1002, cat: Movies, desc: "All Movies"}
@@ -31,7 +31,7 @@ caps:
     - {id: 14, cat: Movies, desc: "Movies - Fantasy"}
     - {id: 24, cat: Movies, desc: "Movies - Horror / Mystery"}
     - {id: 11, cat: Movies, desc: "Movies - Adventure"}
-    - {id: 10, cat: Movies, desc: "Movies - Russian Movies"}
+    - {id: 10, cat: Movies, desc: "Movies - Russian"}
     - {id: 9, cat: Movies, desc: "Movies - Historical"}
     - {id: 47, cat: Movies, desc: "Movies - Asian"}
     - {id: 18, cat: Movies, desc: "Movies - Documentaries"}
@@ -44,10 +44,14 @@ caps:
     - {id: 38, cat: Movies, desc: "Movies - Theatre, Opera, Ballet"}
     - {id: 16, cat: Movies, desc: "Movies - Erotica"}
     # Cartoons
-    - {id: 1003, cat: TV/Anime, desc: "All Cartoons/Anime"}
-    - {id: 21, cat: TV/Anime, desc: "Cartoons"}
-    - {id: 22, cat: TV/Anime, desc: "Cartoons - Russian"}
+    - {id: 1003, cat: TV, desc: "All Cartoons"}
+    - {id: 1003, cat: Movies, desc: "All Cartoons"}
+    - {id: 21, cat: TV, desc: "Cartoons"}
+    - {id: 21, cat: Movies, desc: "Cartoons"}
+    - {id: 22, cat: TV, desc: "Cartoons - Russian"}
+    - {id: 22, cat: Movies, desc: "Cartoons - Russian"}
     - {id: 20, cat: TV/Anime, desc: "Cartoons - Anime"}
+    - {id: 20, cat: Movies/Other, desc: "Cartoons - Anime"}
     # Music
     - {id: 1004, cat: Audio, desc: "All Music"}
     - {id: 3, cat: Audio, desc: "Music"}
@@ -58,7 +62,7 @@ caps:
     - {id: 1006, cat: TV/Other, desc: "Shows, Concerts, Sports"}
     - {id: 2, cat: Audio/Audiobook, desc: "Other - AudioBooks"}
     - {id: 1, cat: Audio/Video, desc: "Other - Music Video's"}
-    - {id: 23, cat: Console, desc: "Other - Games"}
+    - {id: 23, cat: PC/Games, desc: "Other - Games"}
     - {id: 32, cat: PC, desc: "Other - Programs"}
     - {id: 40, cat: Other, desc: "Other - Design / Graphics"}
     - {id: 41, cat: Books, desc: "Other - Library"}
@@ -69,6 +73,7 @@ caps:
     movie-search: [q]
     music-search: [q]
     book-search: [q]
+  allowrawsearch: true
 
 settings:
   - name: username
@@ -111,6 +116,10 @@ settings:
     options:
       0: desc
       1: asc
+  - name: info_torrent
+    type: info
+    label: Torrents
+    default: "This tracker limits the number of torrents a user can download each day without paying. This indexer uses <b>torrent files</b> with the user's passkey, so any download/upload is recorded. If you receive errors when downloading torrent files, you may have reached this limit. To bypass the limit with magnet links, use <b>Kinozal (M)</b>."
 
 login:
   path: takelogin.php
@@ -125,25 +134,6 @@ login:
   test:
     path: my.php
     selector: a[href*="logout.php?hash4u="]
-
-download:
-  before:
-    path: get_srv_details.php
-    inputs:
-      action: 2
-      id: "{{ .DownloadUri.Query.id }}"
-  infohash:
-    usebeforeresponse: true
-    hash:
-      selector: li:first-child
-      filters:
-        - name: regexp
-          args: ([A-F|a-f|0-9]{40})
-    title:
-      selector: div.b
-      filters:
-        - name: trim
-        - name: validfilename
 
 search:
   paths:

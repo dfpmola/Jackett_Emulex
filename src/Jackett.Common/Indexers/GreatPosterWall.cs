@@ -71,14 +71,7 @@ namespace Jackett.Common.Indexers
                 query.ImdbID = null;
             }
 
-            var releases = await base.PerformQuery(query);
-
-            if (query.SearchTerm.IsNullOrWhiteSpace())
-            {
-                releases = releases.Take(50).ToList();
-            }
-
-            return releases;
+            return await base.PerformQuery(query);
         }
 
         protected override bool ReleaseInfoPostParse(ReleaseInfo release, JObject torrent, JObject result)

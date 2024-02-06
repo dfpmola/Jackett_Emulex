@@ -109,7 +109,7 @@ search:
     # can support genre searching but you need to know the id, eg &genre2=1 for Comedy (id is 2)
 
   rows:
-    selector: "table[border=\"1\"][cellpadding=\"3\"][style=\"width: 920px;\"] > tbody > tr:has(a[href^=\"browse.php?cat=\"])"
+    selector: "table[cellpadding=\"3\"][style=\"width: 920px;\"] > tbody > tr:has(a[href^=\"browse.php?cat=\"])"
 
   fields:
     category:
@@ -137,7 +137,9 @@ search:
       selector: small[title]
       attribute: title
     description:
-      text: "{{ .Result.genre }}"
+      case:
+        img[src="/pic/yes.png"]: "Verified: {{ .Result.genre }}"
+        img[src="/pic/nincs.png"]: "Unverified: {{ .Result.genre }}"
     poster:
       selector: a[onmouseover]
       attribute: onmouseover

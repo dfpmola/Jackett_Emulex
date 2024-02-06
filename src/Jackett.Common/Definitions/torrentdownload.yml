@@ -1,27 +1,14 @@
 ---
 id: torrentdownload
 name: TorrentDownload
-description: "TorrentDownload is a Public general torrent index"
+description: "TorrentDownload is a Public torrent meta-search engine"
 language: en-US
 type: public
 encoding: UTF-8
-followredirect: true
 links:
   - https://www.torrentdownload.info/
-  - https://torrentdownload.unblockit.esq/
-  - https://torrentdownload.mrunblock.bond/
-  - https://torrentdownload.nocensor.cloud/
+  - https://torrentdownload.unblockit.date/
 legacylinks:
-  - https://torrentdownload.nocensor.space/
-  - https://torrentdownload.nocensor.work/
-  - https://torrentdownload.nocensor.biz/
-  - https://torrentdownload.unblockit.name/
-  - https://torrentdownload.nocensor.sbs/
-  - https://torrentdownload.unblockit.ist/
-  - https://torrentdownload.unblockit.bet/
-  - https://torrentdownload.unblockit.cat/
-  - https://torrentdownload.unblockit.nz/
-  - https://torrentdownload.nocensor.world/
   - https://torrentdownload.unblockit.page/
   - https://torrentdownload.unblockit.pet/
   - https://torrentdownload.nocensor.lol/
@@ -36,6 +23,12 @@ legacylinks:
   - https://torrentdownload.unblockit.rsvp/
   - https://torrentdownload.nocensor.click/
   - https://torrentdownload.unblockit.vegas/
+  - https://torrentdownload.unblockit.esq/
+  - https://torrentdownload.unblockit.zip/
+  - https://torrentdownload.unblockit.foo/
+  - https://torrentdownload.unblockit.ing/
+  - https://torrentdownload.mrunblock.bond/
+  - https://torrentdownload.nocensor.cloud/
 
 caps:
   categorymappings:
@@ -48,6 +41,7 @@ caps:
     - {id: AnimeAnimeOther, cat: TV/Anime, desc: "Anime Other"}
     - {id: Applications, cat: PC/0day, desc: Applications}
     - {id: ApplicationsAndroid, cat: PC/Mobile-Android, desc: "Applications Android"}
+    - {id: ApplicationsWindows, cat: PC/0day, desc: "Applications Windows"}
     - {id: AudioBooks, cat: Audio/Audiobook, desc: "Books Audiobooks"}
     - {id: AudioAudiobooks, cat: Audio/Audiobook, desc: "Books Audiobooks"}
     - {id: AudioLossless, cat: Audio/Lossless, desc: "Audio Lossless"}
@@ -59,6 +53,7 @@ caps:
     - {id: BooksMagazines, cat: Books/Mags, desc: "Books Magazines"}
     - {id: BooksFiction, cat: Books, desc: "Books Fiction"}
     - {id: BooksNonfiction, cat: Books, desc: "Books Nonfiction"}
+    - {id: BooksTextbooks, cat: Books, desc: "Books Textbooks"}
     - {id: Ebooks, cat: Books/EBook, desc: "Books Ebooks"}
     - {id: Games, cat: Console, desc: Games}
     - {id: GamesWindows, cat: PC/Games, desc: "Games Windows"}
@@ -68,7 +63,9 @@ caps:
     - {id: MoviesCrime, cat: Movies, desc: "Movies Crime"}
     - {id: MoviesDocumentary, cat: TV/Documentary, desc: "Movies Documentary"}
     - {id: MoviesDubbedMovies, cat: Movies, desc: "Movies Dubbed Movies"}
+    - {id: MoviesHighresMovies, cat: Movies, desc: "Movies Highres Movies"}
     - {id: MoviesMusicvideos, cat: Audio/Video, desc: "Movies Musicvideos"}
+    - {id: MoviesThriller, cat: Movies, desc: "Movies Thriller"}
     - {id: Music, cat: Audio, desc: Music}
     - {id: MusicHardrock, cat: Audio, desc: "Music Hardrock"}
     - {id: MusicMp, cat: Audio/MP3, desc: "Music Mp3"}
@@ -92,6 +89,7 @@ caps:
     - {id: Television, cat: TV, desc: Television}
     - {id: VideoMobile, cat: Movies, desc: "Movies Video Mobile"}
     - {id: VideoMovies, cat: Movies, desc: "Video Movies"}
+    - {id: VideoMusic, cat: Audio/Video, desc: "Video Music"}
     - {id: XXX, cat: XXX, desc: XXX}
     - {id: XXXVideo, cat: XXX, desc: "XXX Video"}
     - {id: XXXHDVideo, cat: XXX, desc: "XXX HD Video"}
@@ -120,7 +118,7 @@ download:
 
 search:
   paths:
-    - path: "{{ if .Keywords }}search{{ re_replace .Config.sort \"_\" \"\" }}?q={{ .Keywords }}{{ else }}/{{ end }}"
+    - path: "search{{ re_replace .Config.sort \"_\" \"\" }}?q={{ if .Keywords }}{{ .Keywords }}{{ else }}{{ .Today.Year }}{{ end }}"
 
   rows:
     selector: table.table2 > tbody > tr:has(span.smallish)

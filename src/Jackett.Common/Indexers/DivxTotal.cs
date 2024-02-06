@@ -28,11 +28,9 @@ namespace Jackett.Common.Indexers
         public override string Id => "divxtotal";
         public override string Name => "DivxTotal";
         public override string Description => "DivxTotal is a SPANISH site for Movies, TV series and Software";
-        public override string SiteLink { get; protected set; } = "https://www1.divxtotal.zip/";
+        public override string SiteLink { get; protected set; } = "https://www2.divxtotal.mov/";
         public override string[] LegacySiteLinks => new[]
         {
-            "https://www.divxtotal.nz/",
-            "https://www.divxtotal.li/",
             "https://www.divxtotal.nu/",
             "https://www.divxtotal.se/",
             "https://www.divxtotal.pm/",
@@ -46,6 +44,8 @@ namespace Jackett.Common.Indexers
             "https://www.divxtotal.pl/",
             "https://www.divxtotal.wf/",
             "https://www.divxtotal.win/",
+            "https://www1.divxtotal.zip/",
+            "https://www2.divxtotal.zip/",
         };
         public override string Language => "es-ES";
         public override string Type => "public";
@@ -150,9 +150,10 @@ namespace Jackett.Common.Indexers
                 {
                     htmlString = await LoadWebPageAsync(url);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    logger.Error($"DivxTotal: Failed to load url {url}");
+                    logger.Error(ex, "DivxTotal: Failed to load url [{0}]: {1}", url, ex.Message);
+
                     return releases;
                 }
 

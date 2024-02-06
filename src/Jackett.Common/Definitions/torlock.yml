@@ -5,27 +5,14 @@ description: "Torlock is a torrent search site that lists verified torrents only
 language: en-US
 type: public
 encoding: UTF-8
-followredirect: true
 requestDelay: 2
 links:
-  - https://www.torlock2.com/
   - https://www.torlock.com/
-  - https://torlock.unblockit.esq/
-  - https://torlock.nocensor.cloud/
-  - https://torlock.mrunblock.bond/
+  - https://www.torlock2.com/
+  - https://torlock.unblockit.date/
 legacylinks:
   - https://torlock.com/
-  - https://torlock.nocensor.biz/
   - https://www.torlock.icu/
-  - https://torlock.unblockit.name/
-  - https://torlock.nocensor.sbs/
-  - https://torlock.unblockit.ist/
-  - https://torlock.unblockit.bet/
-  - https://torlock.unblockit.cat/
-  - https://torlock.unblockit.nz/
-  - https://torlock.nocensor.world/
-  - https://torlock.unblockit.page/
-  - https://torlock.unblockit.pet/
   - https://torlock.nocensor.lol/
   - https://torlock.unblockit.ink/
   - https://torlock.unblockit.bio/
@@ -33,11 +20,17 @@ legacylinks:
   - https://torlock.mrunblock.guru/
   - https://torlock.unblockit.click/
   - https://torlock.unblockit.asia/
-  - https://torlock.mrunblock.life/ # This web property is not accessible via this address
+  - https://torlock.mrunblock.life/
   - https://torlock.unblockit.mov/
   - https://torlock.unblockit.rsvp/
   - https://torlock.nocensor.click/
   - https://torlock.unblockit.vegas/
+  - https://torlock.unblockit.esq/
+  - https://torlock.unblockit.zip/
+  - https://torlock.unblockit.foo/
+  - https://torlock.unblockit.ing/
+  - https://torlock.nocensor.cloud/
+  - https://torlock.mrunblock.bond/
 
 caps:
   # dont forget to update the search fields category case block

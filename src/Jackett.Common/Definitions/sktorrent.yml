@@ -4,7 +4,7 @@ name: SkTorrent
 description: "SkTorrent is a CZECH/SLOVAK Semi-Private Torrent Tracker for MOVIES / TV / GENERAL"
 language: cs-CZ
 type: semi-private
-encoding: windows-1250
+encoding: UTF-8
 links:
   - https://sktorrent.eu/
 legacylinks:
@@ -101,8 +101,6 @@ search:
           args: ["^VA\\s*\\|", "VA -"]
         - name: re_replace
           args: ["^.*? \\/\\s*|^.*? \\|\\s*", ""]
-        - name: diacritics
-          args: replace
         - name: re_replace
           args: ["\\|\\s*\\d+\\% CSFD\\.cz\\/|\\s*=*\\s*CSFD\\s*\\d+\\%|\\s*CSFD\\s*=*\\s*\\d+\\%|\\s*CSFD", ""]
         - name: re_replace

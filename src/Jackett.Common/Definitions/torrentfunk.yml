@@ -5,25 +5,13 @@ description: "TorrentFunk is a Public torrent index"
 language: en-US
 type: public
 encoding: UTF-8
-followredirect: true
 links:
   - https://www.torrentfunk.com/
   - https://www.torrentfunk2.com/
-  - https://torrentfunk.unblockit.esq/
-  - https://torrentfunk.nocensor.cloud/
-  - https://torrentfunk.mrunblock.bond/
+  - https://torrentfunk.unblockit.date/
   - https://torrentfunk.ninjaproxy1.com/
+  - https://torrentfunk.proxyninja.org/
 legacylinks:
-  - https://torrentfunk.nocensor.space/
-  - https://torrentfunk.nocensor.work/
-  - https://torrentfunk.nocensor.biz/
-  - https://torrentfunk.unblockit.name/
-  - https://torrentfunk.nocensor.sbs/
-  - https://torrentfunk.unblockit.ist/
-  - https://torrentfunk.unblockit.bet/
-  - https://torrentfunk.unblockit.cat/
-  - https://torrentfunk.unblockit.nz/
-  - https://torrentfunk.nocensor.world/
   - https://torrentfunk.unblockit.page/
   - https://torrentfunk.unblockit.pet/
   - https://torrentfunk.nocensor.lol/
@@ -33,11 +21,17 @@ legacylinks:
   - https://torrentfunk.mrunblock.guru/
   - https://torrentfunk.unblockit.click/
   - https://torrentfunk.unblockit.asia/
-  - https://torrentfunk.mrunblock.life/ # This web property is not accessible via this address
+  - https://torrentfunk.mrunblock.life/
   - https://torrentfunk.unblockit.mov/
   - https://torrentfunk.unblockit.rsvp/
   - https://torrentfunk.nocensor.click/
   - https://torrentfunk.unblockit.vegas/
+  - https://torrentfunk.unblockit.esq/
+  - https://torrentfunk.unblockit.zip/
+  - https://torrentfunk.unblockit.foo/
+  - https://torrentfunk.unblockit.ing/
+  - https://torrentfunk.nocensor.cloud/
+  - https://torrentfunk.mrunblock.bond/
 
 caps:
   categorymappings:

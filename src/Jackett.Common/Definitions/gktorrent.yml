@@ -8,24 +8,9 @@ encoding: UTF-8
 followredirect: true
 # to fetch current domain use https://www.protege-torrent.com/Gktorrent
 links:
-  - https://www.gktorrent.ac/
-  - https://gktorrent.nocensor.cloud/
-  - https://gktorrent.mrunblock.bond/
+  - https://www.gktorrent.wtf/
 legacylinks:
-  - https://www.gktorrent.org/
-  - https://www.gktorrent.me/
   - https://www.rantop.org/
-  - https://www.gktorrent.cx/
-  - https://www.gktorrent.tv/
-  - https://www.gktorrent.net/
-  - https://www.gktorrent.biz/
-  - https://www.gktorrent.io/
-  - https://www.gktorrent.pw/
-  - https://wvw.gktorrent.pw/
-  - https://vww.gktorrent.pw/
-  - https://www.gktorrent.cc/
-  - https://gktorrent.nocensor.space/
-  - https://www.gktorrents.com/
   - https://gktorrent.nocensor.work/
   - https://www.gktorrents.net/
   - https://gktorrent.nocensor.biz/
@@ -34,9 +19,17 @@ legacylinks:
   - https://gktorrent.nocensor.world/
   - https://gktorrent.nocensor.lol/
   - https://gktorrent.mrunblock.guru/
-  - https://gktorrent.mrunblock.life/ # cloudflare 403
+  - https://gktorrent.mrunblock.life/
   - https://gktorrent.nocensor.click/
   - https://www.gktorrents.cc/
+  - https://www.gktorrent.ac/
+  - https://www.gktorrent.ph/
+  - https://www.gktorrent.vc/
+  - https://www.gktorrent.mx/
+  - https://www.gktorrent.fi/
+  - https://www.gktorrent.wf/
+  - https://gktorrent.nocensor.cloud/
+  - https://gktorrent.mrunblock.bond/
 
 caps:
   categorymappings:

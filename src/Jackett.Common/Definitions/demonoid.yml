@@ -5,32 +5,13 @@ description: "Demonoid is a Semi-Private torrent site for MOVIES / TV / GENERAL"
 language: en-US
 type: semi-private
 encoding: UTF-8
-followredirect: true
 links:
   - https://www.demonoid.is/
   - https://www.dnoid.to/
   - https://www.dnoid.pw/
-  - https://demonoid.unblockit.esq/
-  - https://demonoid.torrentbay.net/
-  - https://demonoid.mrunblock.bond/
-  - https://demonoid.nocensor.cloud/
+  - https://demonoid.unblockit.date/
+  - https://demonoid.torrentbay.st/
 legacylinks:
-  - https://demonoid.nocensor.biz/
-  - https://demonoid.unblockit.name/
-  - https://demonoid.nocensor.sbs/
-  - https://demonoid.unblockit.ist/
-  - https://demonoid.unblockit.bet/
-  - https://demonoid.unblockit.cat/
-  - https://demonoid.unblockit.nz/
-  - https://demonoid.nocensor.world/
-  - https://demonoidevmsgasmojajlhikwetsr4pxzw6xkjt3dgdv6nr5yxvsamid.onion.ws/
-  - https://demonoidevmsgasmojajlhikwetsr4pxzw6xkjt3dgdv6nr5yxvsamid.onion.pet/
-  - https://demonoid.unblockit.page/
-  - https://demonoid.unblockit.pet/
-  - https://demonoid.nocensor.lol/
-  - https://demonoid.unblockit.ink/
-  - https://demonoid.nocensor.art/
-  - https://demonoid.unblockit.bio/
   - https://demonoid.unblockit.boo/
   - https://demonoidevmsgasmojajlhikwetsr4pxzw6xkjt3dgdv6nr5yxvsamid.onion.ly/
   - https://demonoidevmsgasmojajlhikwetsr4pxzw6xkjt3dgdv6nr5yxvsamid.tor2web.to/
@@ -44,6 +25,13 @@ legacylinks:
   - https://demonoid.unblockit.rsvp/
   - https://demonoid.nocensor.click/
   - https://demonoid.unblockit.vegas/
+  - https://demonoid.unblockit.esq/
+  - https://demonoid.unblockit.zip/
+  - https://demonoid.unblockit.foo/
+  - https://demonoid.unblockit.ing/
+  - https://demonoid.torrentbay.net/
+  - https://demonoid.mrunblock.bond/
+  - https://demonoid.nocensor.cloud/
 
 caps:
   categorymappings:

@@ -5,37 +5,21 @@ description: "EZTV is a Public torrent site for TV shows"
 language: en-US
 type: public
 encoding: UTF-8
-followredirect: true
 links:
-  - https://eztv.re/
+  - https://eztvx.to/
   - https://eztv.wf/
   - https://eztv.tf/
   - https://eztv.yt/
   - https://eztv1.xyz/
+  - https://eztv.unblockit.date/
   - https://eztv.unblockninja.com/
-  - https://eztv.unblockit.esq/
-  - https://eztv.mrunblock.bond/
-  - https://eztv.nocensor.cloud/
+  - https://eztv.ninjaproxy1.com/
+  - https://eztv.proxyninja.org/
 legacylinks:
   - https://eztv.ag/ # redirects to .re
   - https://eztv.it/ # redirects to .re
   - https://eztv.ch/ # redirects to .re
   - https://eztv.io/
-  - https://eztv.nocensor.biz/
-  - https://eztv.unblockit.name/
-  - https://eztv.nocensor.sbs/
-  - https://eztv.unblockit.ist/
-  - https://eztv.unblockit.bet/
-  - https://eztv.unblockit.cat/
-  - https://eztv.unblockit.nz/
-  - https://eztv.nocensor.world/
-  - https://eztv.unblockit.page/
-  - https://eztv.unblockit.pet/
-  - https://eztv.nocensor.lol/
-  - https://eztv.unblockit.ink/
-  - https://eztv.nocensor.art/
-  - https://eztv.unblockit.bio/
-  - https://eztv.unblockit.boo/
   - https://eztv.mrunblock.guru/
   - https://eztv.unblockit.click/
   - https://eztv.unblockit.asia/
@@ -44,6 +28,14 @@ legacylinks:
   - https://eztv.unblockit.rsvp/
   - https://eztv.nocensor.click/
   - https://eztv.unblockit.vegas/
+  - https://eztv.unblockit.esq/
+  - https://eztv.unblockit.zip/
+  - https://eztv.re/
+  - https://eztv.li/
+  - https://eztv.unblockit.foo/
+  - https://eztv.unblockit.ing/
+  - https://eztv.mrunblock.bond/
+  - https://eztv.nocensor.cloud/
 
 caps:
   categories:
@@ -57,7 +49,7 @@ settings: []
 
 search:
   paths:
-    - path: "{{ if .Keywords }}search/{{ .Keywords }}{{ else }}{{ end }}"
+    - path: "{{ if .Keywords }}search/{{ .Keywords }}{{ else }}home{{ end }}"
 
   keywordsfilters:
     - name: re_replace
@@ -71,7 +63,7 @@ search:
       args: ["&", ""]
 
   headers:
-    cookie: ["sort_no=100"] # show 100 results for keywordless search
+    cookie: ["sort_no=100; q_filter=all; q_filter_web=on; q_filter_reality=on; q_filter_x265=on; layout=def_wlinks"] # show 100 results for keywordless search and show links in results
 
   rows:
     # only use latest added torrents table for keywordless search to avoid duplicates, some torrents don't have any download links so skip them

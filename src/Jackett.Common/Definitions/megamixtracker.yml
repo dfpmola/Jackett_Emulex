@@ -143,8 +143,12 @@ search:
       filters:
         - name: regexp
           args: "src=(.*?) "
-    description:
+    description_text:
       selector: i
+    description:
+      case:
+        img[src$="/ikon_helyes.png"]: "Verified: {{ .Result.description_text }}"
+        img[src$="/ikon_ellenorizetlen.png"]: "Unverified: {{ .Result.description_text }}"
     download:
       selector: a[href^="download.php?id="]
       attribute: href
@@ -181,8 +185,11 @@ search:
         "font[onMouseover]:contains(\"4x\")": 4
         "*": 1
     minimumratio:
-      text: 1.0
+      case:
+        img[src="kepek/ikon_free.png"]: 100 # dummy MR to ensure MST is met
+        "*": 1.0
     minimumseedtime:
-      # 3 days (as seconds = 3 x 24 x 60 x 60)
-      text: 259200
+      case:
+        img[src="kepek/ikon_free.png"]: 604800 # 7d
+        "*": 1209600 # 14d
 # TBDEV custom v2.0

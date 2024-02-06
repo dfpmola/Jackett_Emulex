@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NLog;
 using Polly;
+using Polly.Retry;
 using static Jackett.Common.Models.IndexerConfig.ConfigurationData;
 
 namespace Jackett.Common.Indexers
@@ -163,7 +164,7 @@ namespace Jackett.Common.Indexers
 
         protected virtual IEnumerable<ReleaseInfo> FilterResults(TorznabQuery query, IEnumerable<ReleaseInfo> results)
         {
-            var filteredResults = results;
+            var filteredResults = results.Where(IsValidRelease).ToList();
 
             // filter results with wrong categories
             if (query.Categories.Length > 0)
@@ -174,12 +175,14 @@ namespace Jackett.Common.Indexers
                 filteredResults = filteredResults.Where(result =>
                     result.Category?.Any() != true ||
                     expandedQueryCats.Intersect(result.Category).Any()
-                );
+                ).ToList();
             }
 
             // eliminate excess results
             if (query.Limit > 0)
-                filteredResults = filteredResults.Take(query.Limit);
+            {
+                filteredResults = filteredResults.Take(query.Limit).ToList();
+            }
 
             return filteredResults;
         }
@@ -194,30 +197,55 @@ namespace Jackett.Common.Indexers
                 // fix publish date
                 // some trackers do not keep their clocks up to date and can be ~20 minutes out!
                 if (!EnvironmentUtil.IsDebug && r.PublishDate > DateTime.Now)
+                {
                     r.PublishDate = DateTime.Now;
+                }
 
                 // generate magnet link from info hash (not allowed for private sites)
                 if (r.MagnetUri == null && !string.IsNullOrWhiteSpace(r.InfoHash) && Type != "private")
+                {
                     r.MagnetUri = MagnetUtil.InfoHashToPublicMagnet(r.InfoHash, r.Title);
+                }
 
                 // generate info hash from magnet link
                 if (r.MagnetUri != null && string.IsNullOrWhiteSpace(r.InfoHash))
+                {
                     r.InfoHash = MagnetUtil.MagnetToInfoHash(r.MagnetUri);
+                }
 
                 // set guid
                 if (r.Guid == null)
                 {
                     if (r.Link != null)
+                    {
                         r.Guid = r.Link;
+                    }
                     else if (r.MagnetUri != null)
+                    {
                         r.Guid = r.MagnetUri;
+                    }
                     else if (r.Details != null)
+                    {
                         r.Guid = r.Details;
+                    }
                 }
 
                 return r;
             });
+
             return fixedResults;
+        }
+
+        protected virtual bool IsValidRelease(ReleaseInfo release)
+        {
+            if (release.Title.IsNullOrWhiteSpace())
+            {
+                logger.Error("Invalid Release: '{0}' from indexer: {1}. No title provided.", release.Details, Name);
+
+                return false;
+            }
+
+            return true;
         }
 
         public virtual bool CanHandleQuery(TorznabQuery query)
@@ -244,9 +272,9 @@ namespace Jackett.Common.Indexers
                 return true;
             if (caps.BookSearchAvailable && query.IsBookSearch)
                 return true;
-            if (caps.TvSearchTvRageAvailable && query.IsTVRageSearch)
+            if (caps.TvSearchTvRageAvailable && query.IsTVRageQuery)
                 return true;
-            if (caps.TvSearchTvdbAvailable && query.IsTvdbSearch)
+            if (caps.TvSearchTvdbAvailable && query.IsTvdbQuery)
                 return true;
             if (caps.MovieSearchImdbAvailable && query.IsImdbQuery)
                 return true;
@@ -389,31 +417,41 @@ namespace Jackett.Common.Indexers
             }
         }
 
-        private AsyncPolicy<WebResult> RetryPolicy
+        private ResiliencePipeline<WebResult> RetryStrategy
         {
             get
             {
-                // Configure the retry policy
-                int attemptNumber = 1;
-                var retryPolicy = Policy
-                    .HandleResult<WebResult>(r => (int)r.Status >= 500)
-                    .Or<Exception>()
-                    .WaitAndRetryAsync(
-                        NumberOfRetryAttempts,
-                        retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt) / 4),
-                        onRetry: (exception, timeSpan, context) =>
+                var retryPipeline = new ResiliencePipelineBuilder<WebResult>()
+                    .AddRetry(new RetryStrategyOptions<WebResult>
+                    {
+                        ShouldHandle = args => args.Outcome switch
                         {
-                            if (exception.Result == null)
+                            { Result: { HasHttpServerError: true } } => PredicateResult.True(),
+                            { Result: { Status: System.Net.HttpStatusCode.RequestTimeout } } => PredicateResult.True(),
+                            { Exception: { } } => PredicateResult.True(),
+                            _ => PredicateResult.False()
+                        },
+                        Delay = TimeSpan.FromSeconds(2),
+                        MaxRetryAttempts = NumberOfRetryAttempts,
+                        BackoffType = DelayBackoffType.Exponential,
+                        UseJitter = true,
+                        OnRetry = args =>
+                        {
+                            if (args.Outcome.Exception != null)
                             {
-                                logger.Warn($"Request to {Name} failed with exception '{exception.Exception.Message}'. Retrying in {timeSpan.TotalSeconds}s... (Attempt {attemptNumber} of {NumberOfRetryAttempts}).");
+                                logger.Warn("Request to {0} failed with exception '{1}'. Retrying in {2}s.", Name, args.Outcome.Exception.Message, args.RetryDelay.TotalSeconds);
                             }
                             else
                             {
-                                logger.Warn($"Request to {Name} failed with status {exception.Result.Status}. Retrying in {timeSpan.TotalSeconds}s... (Attempt {attemptNumber} of {NumberOfRetryAttempts}).");
+                                logger.Warn("Request to {0} failed with status {1}. Retrying in {2}s.", Name, args.Outcome.Result?.Status, args.RetryDelay.TotalSeconds);
                             }
-                            attemptNumber++;
-                        });
-                return retryPolicy;
+
+                            return default;
+                        }
+                    })
+                    .Build();
+
+                return retryPipeline;
             }
         }
 
@@ -504,9 +542,9 @@ namespace Jackett.Common.Indexers
             string referer = null, IEnumerable<KeyValuePair<string, string>> data = null,
             Dictionary<string, string> headers = null, string rawbody = null, bool? emulateBrowser = null)
         {
-            return await RetryPolicy.ExecuteAsync(async () =>
-                await RequestWithCookiesAsync(url, cookieOverride, method, referer, data, headers, rawbody, emulateBrowser)
-            );
+            return await RetryStrategy
+                 .ExecuteAsync(async _ => await RequestWithCookiesAsync(url, cookieOverride, method, referer, data, headers, rawbody, emulateBrowser))
+                 .ConfigureAwait(false);
         }
 
         protected virtual async Task<WebResult> RequestWithCookiesAsync(

@@ -26,19 +26,9 @@ namespace Jackett.Common.Indexers
         public override string Id => "mejortorrent";
         public override string Name => "MejorTorrent";
         public override string Description => "MejorTorrent - Hay veces que un torrent viene mejor! :)";
-        public override string SiteLink { get; protected set; } = "https://www6.mejortorrent.rip/";
-        public override string[] AlternativeSiteLinks => new[]
-        {
-            "https://www6.mejortorrent.rip/",
-            "https://mejortorrent.unblockit.esq/"
-        };
+        public override string SiteLink { get; protected set; } = "https://www10.mejortorrent.rip/";
         public override string[] LegacySiteLinks => new[]
         {
-            "https://www.mejortorrents1.com/",
-            "https://www.mejortorrents1.net/",
-            "https://www.mejortorrento.com/",
-            "https://www.mejortorrento.org/",
-            "https://www.mejortorrento.net/",
             "https://www.mejortorrento.info/",
             "https://mejortorrent.nocensor.space/",
             "https://www.mejortorrentes.com/",
@@ -48,7 +38,6 @@ namespace Jackett.Common.Indexers
             "https://mejortorrent.nocensor.biz/",
             "https://www.mejortorrentes.org/",
             "https://mejortorrent.nocensor.sbs/",
-            "https://mejortorrent.unblockit.name/",
             "https://mejortorrent.unblockit.bio/",
             "https://mejortorrent.wtf/",
             "https://mejortorrent.unblockit.boo/",
@@ -62,6 +51,13 @@ namespace Jackett.Common.Indexers
             "https://mejortorrent.unblockit.rsvp/",
             "https://mejortorrent.unblockit.vegas/",
             "https://www5.mejortorrent.rip/",
+            "https://mejortorrent.unblockit.esq/",
+            "https://www6.mejortorrent.rip/",
+            "https://mejortorrent.unblockit.zip/",
+            "https://mejortorrent.unblockit.foo/", // 410
+            "https://www7.mejortorrent.rip/",
+            "https://www8.mejortorrent.rip/",
+            "https://www9.mejortorrent.rip/",
         };
         public override string Language => "es-ES";
         public override string Type => "public";
@@ -169,7 +165,7 @@ namespace Jackett.Common.Indexers
             try
             {
                 var searchResultParser = new HtmlParser();
-                var doc = searchResultParser.ParseDocument(result.ContentString);
+                using var doc = searchResultParser.ParseDocument(result.ContentString);
 
                 var container = doc.QuerySelector(".gap-y-3 > div:nth-child(1) > div:nth-child(1)");
                 var parsedDetailsLink = new List<string>();
@@ -223,7 +219,7 @@ namespace Jackett.Common.Indexers
                 try
                 {
                     var searchResultParser = new HtmlParser();
-                    var doc = searchResultParser.ParseDocument(result.ContentString);
+                    using var doc = searchResultParser.ParseDocument(result.ContentString);
 
                     var table = doc.QuerySelector(".w-11\\/12");
                     // check the search term is valid
@@ -304,7 +300,7 @@ namespace Jackett.Common.Indexers
                 throw new ExceptionWithConfigData(result.ContentString, configData);
 
             var searchResultParser = new HtmlParser();
-            var doc = searchResultParser.ParseDocument(result.ContentString);
+            using var doc = searchResultParser.ParseDocument(result.ContentString);
 
             var rows = doc.QuerySelectorAll("tr.border");
             quality = CleanQuality(quality);
@@ -344,7 +340,7 @@ namespace Jackett.Common.Indexers
                 throw new ExceptionWithConfigData(result.ContentString, configData);
 
             var searchResultParser = new HtmlParser();
-            var doc = searchResultParser.ParseDocument(result.ContentString);
+            using var doc = searchResultParser.ParseDocument(result.ContentString);
 
             var downloadLink = doc.QuerySelector(".ml-2").GetAttribute("href");
 

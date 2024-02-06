@@ -26,10 +26,10 @@ namespace Jackett.Common.Indexers
         public override string Name => "DonTorrent";
         public override string Description => "DonTorrent is a SPANISH public tracker for MOVIES / TV / GENERAL";
         // in the event the redirect is inactive https://t.me/s/dontorrent should have the latest working domain
-        public override string SiteLink { get; protected set; } = "https://dontorrent.bond/";
+        public override string SiteLink { get; protected set; } = "https://dontorrent.band/";
         public override string[] AlternativeSiteLinks => new[]
         {
-            "https://dontorrent.bond/",
+            "https://dontorrent.band/",
             "https://todotorrents.org/",
             "https://tomadivx.net/",
             "https://seriesblanco.one/",
@@ -38,21 +38,21 @@ namespace Jackett.Common.Indexers
         };
         public override string[] LegacySiteLinks => new[]
         {
-            "https://dontorrent.cash/",
-            "https://dontorrent.observer/",
-            "https://dontorrent.company/",
-            "https://dontorrent.discount/",
-            "https://dontorrent.dad/",
-            "https://dontorrent.zip/",
-            "https://todotorrents.net/",
-            "https://dontorrent.mov/",
-            "https://dontorrent.day/",
-            "https://dontorrent.boo/",
-            "https://dontorrent.foo/",
-            "https://dontorrent.hair/",
-            "https://dontorrent.rsvp/",
-            "https://dontorrent.quest/",
             "https://dontorrent.nexus/",
+            "https://dontorrent.bond/",
+            "https://dontorrent.tokyo/",
+            "https://dontorrent.boston/",
+            "https://dontorrent.rodeo/",
+            "https://dontorrent.durban/",
+            "https://dontorrent.party/",
+            "https://dontorrent.joburg/",
+            "https://dontorrent.wales/",
+            "https://dontorrent.nagoya/",
+            "https://dontorrent.contact/",
+            "https://dontorrent.cymru/",
+            "https://dontorrent.capetown/",
+            "https://dontorrent.yokohama/",
+            "https://dontorrent.makeup/",
         };
         public override string Language => "es-ES";
         public override string Type => "public";
@@ -167,7 +167,7 @@ namespace Jackett.Common.Indexers
             var result = await RequestWithCookiesAsync(downloadUrl);
             if (result.Status != HttpStatusCode.OK)
                 throw new ExceptionWithConfigData(result.ContentString, configData);
-            var dom = parser.ParseDocument(result.ContentString);
+            using var dom = parser.ParseDocument(result.ContentString);
 
             //var info = dom.QuerySelectorAll("div.descargar > div.card > div.card-body").First();
             //var title = info.QuerySelector("h2.descargarTitulo").TextContent;
@@ -192,7 +192,7 @@ namespace Jackett.Common.Indexers
             try
             {
                 var searchResultParser = new HtmlParser();
-                var doc = searchResultParser.ParseDocument(result.ContentString);
+                using var doc = searchResultParser.ParseDocument(result.ContentString);
 
                 var rows = doc.QuerySelector("div.seccion#ultimos_torrents > div.card > div.card-body > div");
 
@@ -284,7 +284,7 @@ namespace Jackett.Common.Indexers
             try
             {
                 var searchResultParser = new HtmlParser();
-                var doc = searchResultParser.ParseDocument(result.ContentString);
+                using var doc = searchResultParser.ParseDocument(result.ContentString);
 
                 var rows = doc.QuerySelectorAll("div.seccion#buscador > div.card > div.card-body > p");
 
@@ -375,7 +375,7 @@ namespace Jackett.Common.Indexers
                 throw new ExceptionWithConfigData(result.ContentString, configData);
 
             var searchResultParser = new HtmlParser();
-            var doc = searchResultParser.ParseDocument(result.ContentString);
+            using var doc = searchResultParser.ParseDocument(result.ContentString);
 
             var data = doc.QuerySelector("div.descargar > div.card > div.card-body");
 
@@ -404,7 +404,7 @@ namespace Jackett.Common.Indexers
                 throw new ExceptionWithConfigData(result.ContentString, configData);
 
             var searchResultParser = new HtmlParser();
-            var doc = searchResultParser.ParseDocument(result.ContentString);
+            using var doc = searchResultParser.ParseDocument(result.ContentString);
 
             var data = doc.QuerySelector("div.descargar > div.card > div.card-body");
 
@@ -457,7 +457,7 @@ namespace Jackett.Common.Indexers
                 throw new ExceptionWithConfigData(result.ContentString, configData);
 
             var searchResultParser = new HtmlParser();
-            var doc = searchResultParser.ParseDocument(result.ContentString);
+            using var doc = searchResultParser.ParseDocument(result.ContentString);
 
             // parse tags in title, we need to put the year after the real title (before the tags)
             // Harry Potter And The Deathly Hallows: Part 1 [subs. Integrados]

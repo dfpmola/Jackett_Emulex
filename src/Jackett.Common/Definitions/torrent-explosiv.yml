@@ -60,13 +60,13 @@ caps:
     - {id: 15, cat: TV/Documentary, desc: "Doku SD"}
     - {id: 123, cat: TV/Documentary, desc: "Doku Pack UHD"}
     - {id: 157, cat: TV/Documentary, desc: "Doku Pack HD"}
-    - {id: 158, cat: TV/Documentary, desc: "Doku SD"}
+    - {id: 158, cat: TV/Documentary, desc: "Doku Pack SD"}
     # XXX
     - {id: 160, cat: XXX/UHD, desc: "XXX UHD"}
     - {id: 73, cat: XXX/x264, desc: "XXX HD"}
     - {id: 76, cat: XXX/SD, desc: "XXX SD"}
     - {id: 75, cat: XXX/Pack, desc: "XXX Pack"}
-    - {id: 142, cat: XXX/ImageSet, desc: "XXX Pic's"}
+    - {id: 142, cat: XXX/ImageSet, desc: "XXX Pic´s"}
     - {id: 161, cat: XXX/Other, desc: "XXX ePaper"}
     # ePaper,Ebooks
     - {id: 163, cat: Books/Mags, desc: "ePaper Magazine"}
@@ -126,7 +126,7 @@ login:
   error:
     - selector: div#login_error
   test:
-    path: selection.php
+    path: index.php
     selector: a[href="logout.php"]
 
 search:
@@ -172,6 +172,8 @@ search:
       attribute: src
     size:
       selector: div.selection_unter_ad
+    grabs:
+      selector: div.selection_unter_ae
     date_day:
       # Heute 13:30:04
       # Gestern 09:10:10
@@ -182,6 +184,8 @@ search:
           args: ["Heute", "Today"]
         - name: replace
           args: ["Gestern", "Yesterday"]
+        - name: append
+          args: " +01:00" # CET
     date_year:
       # 30.02.2018 um 23:12:50
       selector: div.selection_unter_ab:contains(".")

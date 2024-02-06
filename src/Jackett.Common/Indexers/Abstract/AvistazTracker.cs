@@ -23,7 +23,9 @@ namespace Jackett.Common.Indexers.Abstract
         public override string Language => "en-US";
         public override string Type => "private";
 
-        public override bool SupportsPagination => true;
+        public override bool SupportsPagination => false;
+
+        protected virtual string TimezoneOffset => "-05:00"; // Avistaz does not specify a timezone & returns server time
 
         private readonly Dictionary<string, string> AuthHeaders = new Dictionary<string, string>
         {
@@ -89,7 +91,7 @@ namespace Jackett.Common.Indexers.Abstract
                 qc.Add("tmdb", query.TmdbID.ToString());
                 qc.Add("search", GetEpisodeSearchTerm(query));
             }
-            else if (query.IsTvdbSearch)
+            else if (query.IsTvdbQuery)
             {
                 qc.Add("tvdb", query.TvdbID.ToString());
                 qc.Add("search", GetEpisodeSearchTerm(query));
@@ -146,7 +148,7 @@ namespace Jackett.Common.Indexers.Abstract
                    cacheService: cs,
                    configData: new ConfigurationDataAvistazTracker())
         {
-            webclient.requestDelay = 3;
+            webclient.requestDelay = 6;
         }
 
         public override async Task<IndexerConfigurationStatus> ApplyConfiguration(JToken configJson)
@@ -220,20 +222,6 @@ namespace Jackett.Common.Indexers.Abstract
                 {
                     var details = new Uri(row.Value<string>("url"));
                     var link = new Uri(row.Value<string>("download"));
-                    var publishDate = DateTime.ParseExact(row.Value<string>("created_at"), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
-
-                    long? imdb = null;
-                    long? tvdb = null;
-                    long? tmdb = null;
-                    var jMovieTv = row.Value<JToken>("movie_tv");
-                    if (jMovieTv != null && jMovieTv.HasValues)
-                    {
-                        imdb = ParseUtil.GetImdbId(jMovieTv.Value<string>("imdb"));
-                        if (long.TryParse(jMovieTv.Value<string>("tvdb"), out var tvdbParsed))
-                            tvdb = tvdbParsed;
-                        if (long.TryParse(jMovieTv.Value<string>("tmdb"), out var tmdbParsed))
-                            tmdb = tmdbParsed;
-                    }
 
                     var description = "";
                     var jAudio = row.Value<JArray>("audio");
@@ -249,8 +237,6 @@ namespace Jackett.Common.Indexers.Abstract
                         description += $"<br/>Subtitles: {string.Join(", ", subtitleList)}";
                     }
 
-                    var cats = ParseCategories(query, row);
-
                     var release = new ReleaseInfo
                     {
                         Title = row.Value<string>("file_name"),
@@ -258,24 +244,46 @@ namespace Jackett.Common.Indexers.Abstract
                         InfoHash = row.Value<string>("info_hash"),
                         Details = details,
                         Guid = details,
-                        Category = cats,
-                        PublishDate = publishDate,
+                        Category = ParseCategories(query, row),
+                        PublishDate = DateTime.Parse($"{row.Value<string>("created_at")} {TimezoneOffset}", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal),
                         Description = description,
                         Size = row.Value<long>("file_size"),
                         Files = row.Value<long>("file_count"),
                         Grabs = row.Value<long>("completed"),
                         Seeders = row.Value<int>("seed"),
                         Peers = row.Value<int>("leech") + row.Value<int>("seed"),
-                        Imdb = imdb,
-                        TVDBId = tvdb,
-                        TMDb = tmdb,
                         DownloadVolumeFactor = row.Value<double>("download_multiply"),
                         UploadVolumeFactor = row.Value<double>("upload_multiply"),
                         MinimumRatio = 1,
-                        MinimumSeedTime = 172800, // 48 hours
+                        MinimumSeedTime = 259200, // 72 hours
                         Languages = row.Value<JArray>("audio")?.Select(x => x.Value<string>("language")).ToList() ?? new List<string>(),
                         Subs = row.Value<JArray>("subtitle")?.Select(x => x.Value<string>("language")).ToList() ?? new List<string>(),
                     };
+
+                    if (release.Size.HasValue && release.Size > 0)
+                    {
+                        var sizeGigabytes = release.Size.Value / Math.Pow(1024, 3);
+
+                        release.MinimumSeedTime = sizeGigabytes > 50.0
+                            ? (long)((100 * Math.Log(sizeGigabytes)) - 219.2023) * 3600
+                            : 259200 + (long)(sizeGigabytes * 7200);
+                    }
+
+                    var jMovieTv = row.Value<JToken>("movie_tv");
+                    if (jMovieTv != null && jMovieTv.HasValues)
+                    {
+                        release.Imdb = ParseUtil.GetImdbId(jMovieTv.Value<string>("imdb"));
+
+                        if (long.TryParse(jMovieTv.Value<string>("tvdb"), out var tvdbId))
+                        {
+                            release.TVDBId = tvdbId;
+                        }
+
+                        if (long.TryParse(jMovieTv.Value<string>("tmdb"), out var tmdbId))
+                        {
+                            release.TMDb = tmdbId;
+                        }
+                    }
 
                     releases.Add(release);
                 }

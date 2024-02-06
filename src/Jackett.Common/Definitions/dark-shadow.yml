@@ -14,15 +14,15 @@ legacylinks:
 caps:
   categorymappings:
     # Movie
-    - {id: 28, cat: Movies/SD, desc: "Filme SD"}
     - {id: 32, cat: Movies/HD, desc: "Filme HD"}
     - {id: 114, cat: Movies/UHD, desc: "Filme UHD"}
     - {id: 140, cat: Movies/BluRay, desc: "Filme BluRay"}
+    - {id: 28, cat: Movies/SD, desc: "Filme SD"}
     - {id: 138, cat: Movies, desc: "Filme Pack`s"}
     # Serien
-    - {id: 60, cat: TV/SD, desc: "Serien SD"}
     - {id: 57, cat: TV/HD, desc: "Serien HD"}
     - {id: 139, cat: TV/UHD, desc: "Serien UHD"}
+    - {id: 60, cat: TV/SD, desc: "Serien SD"}
     - {id: 59, cat: TV, desc: "Serien Pack`s"}
     # Audio
     - {id: 110, cat: Audio/MP3, desc: "Audio MP3"}
@@ -36,31 +36,31 @@ caps:
     - {id: 11, cat: PC/Mobile-Other, desc: "Apps Mobil"}
     - {id: 141, cat: PC/ISO, desc: "Apps Other"}
     # Doku
-    - {id: 15, cat: TV/Documentary, desc: "Doku SD"}
     - {id: 14, cat: TV/Documentary, desc: "Doku HD"}
-    - {id: 123, cat: TV/Documentary, desc: "Doku Reihe"}
+    - {id: 15, cat: TV/Documentary, desc: "Doku SD"}
+    - {id: 123, cat: TV/Documentary, desc: "Doku Pack`s"}
     # Spiel
-    - {id: 126, cat: Console/Other, desc: "Spiel Mobil"}
     - {id: 17, cat: PC/Games, desc: "Spiel PC"}
     - {id: 24, cat: Console, desc: "Spiel Konsole"}
+    - {id: 126, cat: Console/Other, desc: "Spiel Mobil"}
     - {id: 121, cat: Console, desc: "Spiel Wimmelbild"}
     # Sport
     - {id: 61, cat: TV/Sport, desc: "Sport HD"}
     - {id: 62, cat: TV/Sport, desc: "Sport SD"}
+    - {id: 144, cat: TV/Sport, desc: "Sport Wrestling"}
     # ePaper
     - {id: 96, cat: Books/Mags, desc: "ePaper Zeitungen"}
     - {id: 136, cat: Books/EBook, desc: "ePaper E-Book"}
     - {id: 137, cat: Books/Comics, desc: "ePaper Comics"}
     # XXX
-    - {id: 76, cat: XXX/XviD, desc: "XXX SD"}
-    - {id: 73, cat: XXX/x264, desc: "XXX HD"}
-    - {id: 75, cat: XXX/Pack, desc: "XXX Pack"}
-    - {id: 142, cat: XXX/ImageSet, desc: "XXX Pic´s"}
+    - {id: 143, cat: XXX/x264, desc: "XXX HD / SD"}
+    - {id: 75, cat: XXX/Pack, desc: "XXX Pack's"}
+    - {id: 142, cat: XXX/ImageSet, desc: "XXX Pic's"}
     #  Internal
-    - {id: 129, cat: Movies/SD, desc: "Internal Film SD"}
     - {id: 128, cat: Movies/HD, desc: "Internal Film HD"}
-    - {id: 131, cat: TV/SD, desc: "Internal Serie SD"}
+    - {id: 129, cat: Movies/SD, desc: "Internal Film SD"}
     - {id: 130, cat: TV/HD, desc: "Internal Serien HD"}
+    - {id: 131, cat: TV/SD, desc: "Internal Serie SD"}
     - {id: 132, cat: Other, desc: "Internal Sonstiges"}
 
   modes:

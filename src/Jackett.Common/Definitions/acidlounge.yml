@@ -141,7 +141,6 @@ search:
       selector: a[href^="download.php?"]
       attribute: href
     description:
-      optional: true
       selector: span.torrent_small_desc
     genre:
       selector: span.torrent_small_desc
