@@ -616,7 +616,7 @@ stages:
             inputs:
               targetType: inline
               script: |
-                $json = Invoke-WebRequest 'https://dev.azure.com/Jackett/Jackett/_apis/build/builds/$(Build.BuildId)/logs?api-version=5.0' | ConvertFrom-Json
+                $json = Invoke-WebRequest 'https://dev.azure.com/dfpmola/jackett_emulex_pipeline/_apis/build/builds/$(Build.BuildId)/logs?api-version=5.0' | ConvertFrom-Json
                 $lastTwoLogUrls = $json.value[-1..-2].url
                 foreach($logUrl in $lastTwoLogUrls)
                 {
