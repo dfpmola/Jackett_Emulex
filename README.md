@@ -46,7 +46,6 @@ A third-party Golang SDK for Jackett is available from [webtor-io/go-jackett](ht
  * Byrutor
  * Cinecalidad
  * comicat
- * ConCen
  * cpasbien
  * cpasbienClone
  * CrackingPatching
@@ -60,6 +59,7 @@ A third-party Golang SDK for Jackett is available from [webtor-io/go-jackett](ht
  * EXT Torrents
  * ExtraTorrent.st
  * EZTV
+ * Frozen Layer
  * GamesTorrents
  * GkTorrent
  * GloDLS
@@ -133,7 +133,6 @@ A third-party Golang SDK for Jackett is available from [webtor-io/go-jackett](ht
  * TorrentSir (토렌트썰)
  * TorrentView (토렌트뷰)
  * TorrentWhiz (토렌트위즈)
- * Torrentz2eu
  * Torrentz2nz
  * TrahT
  * truPornolabs
@@ -141,6 +140,7 @@ A third-party Golang SDK for Jackett is available from [webtor-io/go-jackett](ht
  * VSTHouse
  * VST Torrentz
  * VSTorrent
+ * Wolfmax4K
  * xxxAdultTorrent
  * XXXClub
  * xxxtor
@@ -212,7 +212,6 @@ A third-party Golang SDK for Jackett is available from [webtor-io/go-jackett](ht
  * Toloka.to
  * TorrentMasters
  * Torrents-Local
- * TorrentDownload
  * TribalMixes
  * Union Fansub
  * UniOtaku
@@ -238,6 +237,7 @@ A third-party Golang SDK for Jackett is available from [webtor-io/go-jackett](ht
  * ABtorrents (ABT + RNS)
  * Acid Lounge (A-L)
  * AcrossTheTasman [![(invite needed)][inviteneeded]](#)
+ * ADBT (Anime Datenbank Tracker)
  * Aftershock
  * AGSVPT (Artic Global Seed Vault)
  * Aidoru!Online
@@ -248,7 +248,6 @@ A third-party Golang SDK for Jackett is available from [webtor-io/go-jackett](ht
  * AnimeTorrents (AnT)
  * AnimeTorrents.ro (Anime Torrents Romania)
  * AnimeWorld
- * AniToons
  * Anthelion
  * Araba Fenice (Phoenix) [![(invite needed)][inviteneeded]](#)
  * ArabP2P
@@ -294,7 +293,6 @@ A third-party Golang SDK for Jackett is available from [webtor-io/go-jackett](ht
  * Carp-Hunter
  * Carpathians
  * CarPT
- * CartoonChaos (CC)
  * Cathode-Ray.Tube (CRT)
  * Central Torrent
  * CeskeForum
@@ -308,11 +306,13 @@ A third-party Golang SDK for Jackett is available from [webtor-io/go-jackett](ht
  * CinemaZ (EuTorrents)
  * Classix
  * Coastal-Crew
+ * ConCen [![(invite needed)][inviteneeded]](#)
  * Concertos
  * CrazySpirits
  * CrnaBerza
  * Dajiao (打胶) [![(invite needed)][inviteneeded]](#)
  * DANISH BYTES
+ * Darius Tracker
  * Dark-Shadow
  * DataScene (DS)
  * DesiTorrents
@@ -365,7 +365,6 @@ A third-party Golang SDK for Jackett is available from [webtor-io/go-jackett](ht
  * HappyFappy
  * Hares Club (白兔俱乐部) [![(invite needed)][inviteneeded]](#)
  * Hawke-uno
- * HD Dolby
  * HD-Club
  * HD-Forever (HDF)
  * HD-Olimpo
@@ -391,6 +390,7 @@ A third-party Golang SDK for Jackett is available from [webtor-io/go-jackett](ht
  * HDU
  * hdvbits
  * HDVIDEO
+ * Heavens-Hell
  * Hebits
  * HellasHut
  * HHanClub
@@ -547,6 +547,7 @@ A third-party Golang SDK for Jackett is available from [webtor-io/go-jackett](ht
  * TeamOS
  * TEKNO3D [![(invite needed)][inviteneeded]](#)
  * teracod (Movie Zone)
+ * TGay
  * The Crazy Ones
  * The Falling Angels (TFA)
  * The Geeks
@@ -567,7 +568,6 @@ A third-party Golang SDK for Jackett is available from [webtor-io/go-jackett](ht
  * TLFBits [![(invite needed)][inviteneeded]](#)
  * TmGHuB
  * Toca Share
- * ToonsForMe
  * Tornado
  * Torrent Network (TN)
  * Torrent Sector Crew (TSC)
@@ -590,7 +590,6 @@ A third-party Golang SDK for Jackett is available from [webtor-io/go-jackett](ht
  * TorrentLeech (TL)
  * TorrentLeech.pl
  * TorrentSeeds (TS)
- * TotallyKids (TK)
  * ToTheGlory (TTG) [![(invite needed)][inviteneeded]](#)
  * TrackerMK
  * TranceTraffic
