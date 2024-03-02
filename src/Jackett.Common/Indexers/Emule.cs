@@ -218,7 +218,7 @@ namespace Jackett.Common.Indexers
 
             var releases = new List<ReleaseInfo>();
 
-            var url = "emule/status/";
+            var url = "emulex/status/";
             url = new Uri(new Uri(this.SiteLink), url).ToString();
 
             var result = await RequestWithCookiesAsync(
@@ -234,8 +234,32 @@ namespace Jackett.Common.Indexers
             if (result.Status != HttpStatusCode.OK && (result.Status == HttpStatusCode.ServiceUnavailable || result.Status == HttpStatusCode.Forbidden))
                 return releases;
 
+
+
             var release = GenerateRelease("TODO", "link", "https://ed2k.shortypower.org/?hash=31C0CADFEF07C84E9CF23E26C0BBA159", "Pelicula", DateTime.Now, 40000);
             releases.Add(release);
+            releases.Add(release);
+            releases.Add(release);
+            releases.Add(release);
+            releases.Add(release);
+            releases.Add(release);
+            releases.Add(release);
+            releases.Add(release);
+            releases.Add(release);
+
+
+            var release2 = GenerateRelease("TODO2", "link", "https://ed2k.shortypower.org/?hash=31C0CADFEF07C84E9CF23E26C0BBA158", "Serie", DateTime.Now, 40000);
+            releases.Add(release2);
+            releases.Add(release2);
+            releases.Add(release2);
+            releases.Add(release2);
+            releases.Add(release2);
+            releases.Add(release2);
+            releases.Add(release2);
+            releases.Add(release);
+            releases.Add(release2);
+
+
             return releases;
         }
 
@@ -244,10 +268,45 @@ namespace Jackett.Common.Indexers
             var releases = new List<ReleaseInfo>();
             // search only the longest word, we filter the results later
             //var searchTerm = GetLongestWord(query.SearchTerm);
-            var url = "emule/search/";// Uri.EscapeDataString(query.SearchTerm +" "+query.Year + " mkv");
-            url = new Uri( new Uri(this.SiteLink), url).ToString();
+            var url = "emulex/search/";// Uri.EscapeDataString(query.SearchTerm +" "+query.Year + " mkv");
+            url = new Uri(new Uri(this.SiteLink), url).ToString();
             //var result = await RequestWithCookiesAsync(url, referer: url);
-            string keyword = query.SearchTerm + " " + query.Year;
+
+
+
+            //Convertimos S01E01 en 0x01
+
+
+            var searchPattern = query.SearchTerm;
+            // Expresión regular para encontrar el patrón S01E01
+            string patronEpisodio = @"S(\d{2})E(\d{2})";
+
+            // Buscar el patrón en el texto original
+            Match match = Regex.Match(query.SearchTerm, patronEpisodio);
+
+            if (match.Success)
+            {
+                // Obtener los números de temporada y episodio
+                int temporada = int.Parse(match.Groups[1].Value);
+                int episodio = int.Parse(match.Groups[2].Value);
+
+                // Formatear los números en el formato deseado (1x01)
+                string nuevoFormatoEpisodio = episodio < 10 ? $"0{episodio}" : episodio.ToString();
+
+                string nuevoFormato = $"{temporada}x{nuevoFormatoEpisodio}";
+                // Reemplazar el patrón original con el nuevo formato
+                searchPattern = Regex.Replace(query.SearchTerm, patronEpisodio, nuevoFormato);
+
+                Console.WriteLine(searchPattern);
+            }
+            else
+            {
+                Console.WriteLine("No se encontró el patrón en el texto original.");
+            }
+
+
+
+            string keyword = searchPattern + " " + query.Year;
             var data = new Dictionary<string, string>
             {
                 { "keyword", keyword },
@@ -268,7 +327,7 @@ namespace Jackett.Common.Indexers
             if (result.Status != HttpStatusCode.Created)
                 throw new ExceptionWithConfigData(result.ContentString, configData);
 
-            try 
+            try
             {
                 var searchResultParser = new HtmlParser();
                 var doc = searchResultParser.ParseDocument(result.ContentString);
@@ -322,7 +381,7 @@ namespace Jackett.Common.Indexers
                             Details = new Uri("https://ed2k.shortypower.org/?hash=" + item.GetValue("_hash")),
                             Link = new Uri("https://ed2k.shortypower.org/?hash=" + item.GetValue("_hash"))
                         };
-                        release.Guid = new Uri("https://ed2k.shortypower.org/?hash=" + item.GetValue("_hash"));
+                        release.Guid = new Uri("https://ed2k.shortypower.org/?hash=" + item.GetValue("_ed2kLinks"));
                         release.Imdb = ParseUtil.GetImdbId((string)"_test");
                         var freeleech = (bool)true;
                         if (freeleech)
@@ -363,7 +422,7 @@ namespace Jackett.Common.Indexers
                             release.Files = 1;
                         release.Size = sizeNumber;
                         release.Seeders = (int?)item.GetValue("_seed");
-                        release.Peers =0;
+                        release.Peers = (int?)item.GetValue("_peer");
                         release.PublishDate = DateTimeUtil.FromUnknown((string)"1/12/1999");
                         var link = new Uri("https://ed2k.shortypower.org/?hash=" + item.GetValue("_hash"));
                         //release.MagnetUri = new Uri((string)item.GetValue("urled2k"));
@@ -374,7 +433,7 @@ namespace Jackett.Common.Indexers
                         builder.Scheme = "http";
                         builder.Host = "192.168.1.85";
                         builder.Port = 3000;
-                        builder.Path = "emule/ed2k";
+                        builder.Path = "emulex/ed2k";
 
                         // Asignar la cadena de consulta con el enlace ed2k sin codificar
                         //string queryString = "name="+(string)item.GetValue("_urled2k");
