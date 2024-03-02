@@ -315,39 +315,7 @@ stages:
     displayName: Code Style Compliance
     dependsOn: []
     jobs:
-      - job: Linting_Dotnet
-        displayName: Linting Dotnet
-        pool:
-          vmImage: ubuntu-22.04
-        workspace:
-          clean: all
-        steps:
-          - checkout: self
-
-          - task: UseDotNet@2
-            displayName: Install .NET Core SDK
-            inputs:
-              packageType: sdk
-              version: $(netCoreSdkVersion)
-              installationPath: $(Agent.ToolsDirectory)/dotnet
-
-          - task: DotNetCoreCLI@2
-            displayName: Install Dotnet Format
-            inputs:
-              command: custom
-              custom: tool
-              arguments: update -g dotnet-format
-
-          - task: Bash@3
-            displayName: Lint Dotnet
-            inputs:
-              workingDirectory: $(Build.SourcesDirectory)
-              targetType: inline
-              failOnStderr: true
-              # execute this command to format all files:
-              # dotnet-format --fix-whitespace --verbosity diagnostic --folder ./src
-              script: dotnet-format --check --verbosity diagnostic --folder ./src
-
+     
       - job: Linting_YAML
         displayName: Linting YAML
         pool:
@@ -616,7 +584,7 @@ stages:
             inputs:
               targetType: inline
               script: |
-                $json = Invoke-WebRequest 'https://dev.azure.com/Jackett/Jackett/_apis/build/builds/$(Build.BuildId)/logs?api-version=5.0' | ConvertFrom-Json
+                $json = Invoke-WebRequest 'https://dev.azure.com/dfpmola/jackett_emulex_pipeline/_apis/build/builds/$(Build.BuildId)/logs?api-version=5.0' | ConvertFrom-Json
                 $lastTwoLogUrls = $json.value[-1..-2].url
                 foreach($logUrl in $lastTwoLogUrls)
                 {

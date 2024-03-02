@@ -275,6 +275,7 @@ namespace Jackett.Updater
                 "Definitions/animeitalia.yml",
                 "Definitions/animetracker.yml",
                 "Definitions/animeworld.yml", // switch to *-API #8682
+                "Definitions/anitoons.yml",
                 "Definitions/aox.yml",
                 "Definitions/apollo.yml", // migrated to C# gazelle base tracker
                 "Definitions/archetorrent.yml",
@@ -322,6 +323,7 @@ namespace Jackett.Updater
                 "Definitions/btworld.yml",
                 "Definitions/btxpress.yml",
                 "Definitions/bulltorrent.yml",
+                "Definitions/cartoonchaos.yml",
                 "Definitions/casatorrent.yml", // renamed to teamctgame
                 "Definitions/casstudiotv.yml",
                 "Definitions/ccfbits.yml",
@@ -338,7 +340,6 @@ namespace Jackett.Updater
                 "Definitions/czteam.yml",
                 "Definitions/cztorrent.yml",
                 "Definitions/danishbytes.yml", // migrated to C#
-                "Definitions/dariustracker.yml",
                 "Definitions/darktracker.yml",
                 "Definitions/darmowetorenty.yml", // migrated to C#
                 "Definitions/datascene.yml", // switch to *-API #8682
@@ -395,7 +396,6 @@ namespace Jackett.Updater
                 "Definitions/freedomhd.yml",
                 "Definitions/freetorrent.yml",
                 "Definitions/freshmeat.yml",
-                "Definitions/frozenlayer.yml",
                 "Definitions/fullmixmusic.yml",
                 "Definitions/funreleases.yml",
                 "Definitions/fusionmayhem.yml",
@@ -422,6 +422,7 @@ namespace Jackett.Updater
                 "Definitions/hdcity.yml", // moved to pixelados
                 "Definitions/hdclub.yml",
                 "Definitions/hddisk.yml",
+                "Definitions/hddolby.yml",
                 "Definitions/hdhouse.yml",
                 "Definitions/hdme.yml",
                 "Definitions/hdmonkey.yml",
@@ -562,6 +563,7 @@ namespace Jackett.Updater
                 "Definitions/rofd.yml",
                 "Definitions/rptorrents.yml",
                 "Definitions/rptorrents-api.yml", // renamed to rptscene-api
+                "Definitions/rptscene-api.yml", // changed engine, new indexer rptscene #5368
                 "Definitions/rus-media.yml",
                 "Definitions/scenefz.yml", // migrated to C# XtremeZone base tracker
                 "Definitions/scenehd.yml", // migrated to C# (use JSON API)
@@ -619,6 +621,7 @@ namespace Jackett.Updater
                 "Definitions/tjangto.yml",
                 "Definitions/tntfork.yml",
                 "Definitions/tntvillage.yml",
+                "Definitions/toonsforme.yml",
                 "Definitions/topnow.yml",
                 "Definitions/torlook.yml",
                 "Definitions/toros.yml", // renamed to bulltorrent
@@ -627,6 +630,7 @@ namespace Jackett.Updater
                 "Definitions/torrentbomb.yml",
                 "Definitions/torrentcouch.yml",
                 "Definitions/torrentdb.yml",
+                "Definitions/torrentdownload.yml",
                 "Definitions/torrentfactory.yml",
                 "Definitions/torrentgalaxyorg.yml", // renamed to torrentgalaxy
                 "Definitions/torrenthane.yml",
@@ -646,9 +650,11 @@ namespace Jackett.Updater
                 "Definitions/torrentwal.yml",
                 "Definitions/torrentwtf.yml",
                 "Definitions/torrentz2.yml",
+                "Definitions/torrentz2eu.yml",
                 "Definitions/torrentz2k.yml",
                 "Definitions/torrof.yml",
                 "Definitions/torviet.yml",
+                "Definitions/totallykids.yml",
                 "Definitions/trackeros-api.yml",
                 "Definitions/trackeros.yml", // switch to *-API #12807
                 "Definitions/tspate.yml",
