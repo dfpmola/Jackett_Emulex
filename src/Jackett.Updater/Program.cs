@@ -271,6 +271,7 @@ namespace Jackett.Updater
                 "Definitions/anaschcc.yml",
                 "Definitions/angietorrents.yml",
                 "Definitions/anidex.yml", // migrated to C#
+                "Definitions/anime-free.yml",
                 "Definitions/animeclipse.yml",
                 "Definitions/animeitalia.yml",
                 "Definitions/animetracker.yml",
@@ -328,6 +329,7 @@ namespace Jackett.Updater
                 "Definitions/casstudiotv.yml",
                 "Definitions/ccfbits.yml",
                 "Definitions/channelx.yml",
+                "Definitions/cheggit.yml",
                 "Definitions/cili180.yml", // renamed to liaorencili
                 "Definitions/cilipro.yml",
                 "Definitions/cinefilhd.yml",
@@ -664,6 +666,7 @@ namespace Jackett.Updater
                 "Definitions/turktracker.yml",
                 "Definitions/twilight.yml",
                 "Definitions/twilightszoom.yml",
+                "Definitions/twisted-music.yml",
                 "Definitions/u-torrents.yml",
                 "Definitions/uhd-heaven.yml",
                 "Definitions/ultimategamerclub.yml",
