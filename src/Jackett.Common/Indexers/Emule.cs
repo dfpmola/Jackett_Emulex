@@ -188,29 +188,8 @@ namespace Jackett.Common.Indexers
         public override async Task<byte[]> Download(Uri link)
         {
             var downloadUrl = link.ToString();
-            if (downloadUrl.Contains("cdn.pizza") || downloadUrl.Contains("blazing.network") || downloadUrl.Contains("tor.cat") || downloadUrl.Contains("cdndelta.com") || downloadUrl.Contains("cdnbeta.in"))
-            {
-                return await base.Download(link);
-            }
-
-            var parser = new HtmlParser();
-
-            // Eg https://dontorrent.li/pelicula/24797/Halloween-Kills
-            var result = await RequestWithCookiesAsync(downloadUrl);
-            if (result.Status != HttpStatusCode.OK)
-                throw new ExceptionWithConfigData(result.ContentString, configData);
-            var dom = parser.ParseDocument(result.ContentString);
-
-            //var info = dom.QuerySelectorAll("div.descargar > div.card > div.card-body").First();
-            //var title = info.QuerySelector("h2.descargarTitulo").TextContent;
-
-            var dlStr = dom.QuerySelector("div.text-center > p > a");
-
-            //dl site starts with "//cdn.pizza" and they accept https so use it
-            downloadUrl = dlStr != null ? string.Format("https:{0}", dlStr.GetAttribute("href")) : "";
-
-            var content = await base.Download(new Uri(downloadUrl));
-            return content;
+            byte[] bytes = Encoding.UTF8.GetBytes(downloadUrl);
+            return bytes;
         }
 
         private async Task<List<ReleaseInfo>> checkStatus(TorznabQuery query)
@@ -304,9 +283,13 @@ namespace Jackett.Common.Indexers
                 Console.WriteLine("No se encontró el patrón en el texto original.");
             }
 
+            Encoding iso = Encoding.GetEncoding("ISO-8859-1");
+            Encoding utf8 = Encoding.UTF8;
+            byte[] utfBytes = utf8.GetBytes(searchPattern);
+            byte[] isoBytes = Encoding.Convert(utf8, iso, utfBytes);
+            string msg = iso.GetString(isoBytes);
 
-
-            string keyword = searchPattern + " " + query.Year;
+            string keyword = msg + " " + query.Year;
             var data = new Dictionary<string, string>
             {
                 { "keyword", keyword },
@@ -379,7 +362,7 @@ namespace Jackett.Common.Indexers
 
                             Title = title,
                             Details = new Uri("https://ed2k.shortypower.org/?hash=" + item.GetValue("_hash")),
-                            Link = new Uri("https://ed2k.shortypower.org/?hash=" + item.GetValue("_hash"))
+                            //Link = new Uri("https://ed2k.shortypower.org/?hash=" + item.GetValue("_hash"))
                         };
                         release.Guid = new Uri("https://ed2k.shortypower.org/?hash=" + item.GetValue("_ed2kLinks"));
                         release.Imdb = ParseUtil.GetImdbId((string)"_test");
@@ -456,7 +439,7 @@ namespace Jackett.Common.Indexers
 
 
                         release.MagnetUri  = new System.Uri("magnet:?xt=urn:btih:" + item.GetValue("_hash")+ "99999999" + "&dn=EMULE");
-                        release.Link = link;
+                        release.Link = release.MagnetUri;
                         releases.Add(release);
 
                     }
