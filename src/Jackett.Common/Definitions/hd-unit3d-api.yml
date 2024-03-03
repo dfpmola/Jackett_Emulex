@@ -49,6 +49,10 @@ settings:
     options:
       desc: desc
       asc: asc
+  - name: info_activity
+    type: info
+    label: Account Inactivity
+    default: "Inactive accounts will be deleted as scheduled by Staff."
 
 login:
   path: /api/torrents
@@ -114,6 +118,8 @@ search:
     genre:
       selector: meta.genres
       filters:
+        - name: re_replace
+          args: ["(?i)^None$", ""]
         - name: re_replace
           args: ["(?i)(Science Fiction)", "Science_Fiction"]
         - name: re_replace

@@ -152,7 +152,6 @@ A third-party Golang SDK for Jackett is available from [webtor-io/go-jackett](ht
 <details> <summary> <b> Supported Semi-Private Trackers </b> </summary>
 
  * AniDUB
- * Anime-Free
  * AnimeLayer
  * ArenaBG
  * BookTracker
@@ -298,7 +297,6 @@ A third-party Golang SDK for Jackett is available from [webtor-io/go-jackett](ht
  * CeskeForum
  * CGPeers [![(invite needed)][inviteneeded]](#)
  * CHDBits [![(invite needed)][inviteneeded]](#)
- * cheggit
  * ChileBT
  * Cinemageddon [![(invite needed)][inviteneeded]](#)
  * CinemaMovieS_ZT
@@ -323,7 +321,7 @@ A third-party Golang SDK for Jackett is available from [webtor-io/go-jackett](ht
  * DiscFan
  * DivTeam
  * DocsPedia
- * Dream Tracker
+ * Dream Tracker [![(invite needed)][inviteneeded]](#)
  * Drugari
  * Ebooks-Shares
  * Empornium (EMP) [![(invite needed)][inviteneeded]](#)
@@ -431,6 +429,7 @@ A third-party Golang SDK for Jackett is available from [webtor-io/go-jackett](ht
  * Lesbians4u
  * Libble
  * LibraNet (LN)
+ * LilleSky.org
  * LinkoManija
  * Locadora
  * LosslessClub [![(invite needed)][inviteneeded]](#)
@@ -599,7 +598,6 @@ A third-party Golang SDK for Jackett is available from [webtor-io/go-jackett](ht
  * TV Chaos UK (TVCUK)
  * TvRoad
  * TVstore
- * Twisted-Music
  * U2 (U2分享園@動漫花園) [![(invite needed)][inviteneeded]](#)
  * UBits
  * UHDBits
@@ -607,7 +605,7 @@ A third-party Golang SDK for Jackett is available from [webtor-io/go-jackett](ht
  * UnionGang
  * Universal-Torrents
  * UnlimitZ
- * Upload.cx [![(invite needed)][inviteneeded]](#)
+ * upload.cx
  * UTOPIA
  * WDT (Wrestling Desires Torrents / Ultimate Wrestling Torrents)
  * White Angel
