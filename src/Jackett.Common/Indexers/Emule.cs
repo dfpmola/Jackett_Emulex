@@ -217,7 +217,7 @@ namespace Jackett.Common.Indexers
 
 
 
-            var release = GenerateRelease("TODO", "link", "https://ed2k.shortypower.org/?hash=31C0CADFEF07C84E9CF23E26C0BBA159", "Pelicula", DateTime.Now, 40000);
+            var release = GenerateRelease("TODO ", "link", "https://ed2k.shortypower.org/?hash=31C0CADFEF07C84E9CF23E26C0BBA159", "Pelicula", DateTime.Now, 40000);
             releases.Add(release);
             releases.Add(release);
             releases.Add(release);
@@ -229,7 +229,7 @@ namespace Jackett.Common.Indexers
             releases.Add(release);
 
 
-            var release2 = GenerateRelease("TODO2", "link", "https://ed2k.shortypower.org/?hash=31C0CADFEF07C84E9CF23E26C0BBA158", "Serie", DateTime.Now, 40000);
+            var release2 = GenerateRelease("TODO2 ", "link", "https://ed2k.shortypower.org/?hash=31C0CADFEF07C84E9CF23E26C0BBA158", "Serie", DateTime.Now, 40000);
             releases.Add(release2);
             releases.Add(release2);
             releases.Add(release2);
