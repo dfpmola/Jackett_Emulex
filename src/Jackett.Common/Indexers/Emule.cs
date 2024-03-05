@@ -61,7 +61,7 @@ namespace Jackett.Common.Indexers
             "grupo hds",
             "grupohds",
             "sharerip",
-            "Bryan_122"
+            "bryan_122"
         };
         public override TorznabCapabilities TorznabCaps => SetCapabilities();
 
@@ -351,11 +351,49 @@ namespace Jackett.Common.Indexers
 
                         foreach (string releaseGroup in this.SpanishReleaseGroup)
                         {
+                            /*
+                            if ((title.ToLower()).Contains(releaseGroup))
+                            {
+
+                                string patron = @"^(.*?\(\d{4}\))";
+                                string regex1x02 = @"\d{1}[xX]\d{2}";
+
+                                title = Regex.Replace(title, patron, "$1 " + "Spanish", RegexOptions.IgnoreCase);
+                                break;
+                            }
+                            */
+
                             if ((title.ToLower()).Contains(releaseGroup))
                             {
                                 string patron = @"^(.*?\(\d{4}\))";
-                                title = Regex.Replace(title, patron, "$1 " + "Spanish", RegexOptions.IgnoreCase);
-                                break;
+                                string regex1x02 = @"\d{1}[xX]\d{2}";
+
+                                // Intenta con la primera expresión regular
+                                Match match2 = Regex.Match(title, patron, RegexOptions.IgnoreCase);
+                                if (match2.Success)
+                                {
+                                    // Si hay una coincidencia, reemplaza y termina el ciclo
+                                    title = Regex.Replace(title, patron, "$& Spanish ");
+                                    break;
+                                }
+                                else
+                                {
+                                    // Si no hay coincidencia con la primera expresión regular, intenta con la segunda
+                                    match2 = Regex.Match(title, regex1x02);
+                                    if (match2.Success)
+                                    {
+                                        //title = Regex.Replace(title, regex1x02, "$1 Spanish");
+                                        //title = Regex.Replace(title, match2.ToString(), m => m.Groups[1].Value + " Spanish");
+
+                                        //string patronEpisodio = @"\b\d{1}[xX]\d{2}\b";
+
+                                        // Reemplazar el formato del episodio con "1x03 Spanish"
+                                        title = Regex.Replace(title, regex1x02, "$& Spanish");
+
+                                        break;
+
+                                    }
+                                }
                             }
                         }
                         var release = new ReleaseInfo
