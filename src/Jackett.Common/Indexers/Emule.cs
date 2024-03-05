@@ -61,7 +61,8 @@ namespace Jackett.Common.Indexers
             "grupo hds",
             "grupohds",
             "sharerip",
-            "bryan_122"
+            "bryan_122",
+            "yamil"
         };
         public override TorznabCapabilities TorznabCaps => SetCapabilities();
 
