@@ -53,6 +53,7 @@ namespace Jackett.Common.Indexers
             "nocturnia",
             "exploradoresp2p",
             "xusman",
+            "geot",
             "hispashare",
             "cartmangold",
             "grupots",
