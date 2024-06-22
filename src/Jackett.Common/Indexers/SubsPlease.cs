@@ -27,16 +27,6 @@ namespace Jackett.Common.Indexers
         public override string SiteLink { get; protected set; } = "https://subsplease.org/";
         public override string[] LegacySiteLinks => new[]
         {
-            "https://subsplease.nocensor.space/",
-            "https://subsplease.nocensor.work/",
-            "https://subsplease.nocensor.biz/",
-            "https://subsplease.nocensor.sbs/",
-            "https://subsplease.nocensor.world/",
-            "https://subsplease.nocensor.lol/",
-            "https://subsplease.nocensor.art/",
-            "https://subsplease.mrunblock.guru/",
-            "https://subsplease.mrunblock.life/",
-            "https://subsplease.nocensor.click/",
             "https://subsplease.mrunblock.bond/",
             "https://subsplease.nocensor.cloud/"
         };
@@ -106,6 +96,13 @@ namespace Jackett.Common.Indexers
             if (resMatch.Success)
             {
                 searchTerm = searchTerm.Replace(resMatch.Value, string.Empty);
+            }
+
+            // Only include season > 1 in searchTerm, format as S2 rather than S02
+            if (query.Season != 0)
+            {
+                searchTerm = query.Season == 1 ? searchTerm : searchTerm + $" S{query.Season}";
+                query.Season = 0;
             }
 
             var queryParameters = new NameValueCollection

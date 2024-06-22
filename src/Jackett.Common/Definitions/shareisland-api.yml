@@ -43,6 +43,10 @@ settings:
     type: checkbox
     label: Search freeleech only
     default: false
+  - name: single_file_release_use_filename
+    type: checkbox
+    label: Use filename as title for single file releases
+    default: true
   - name: sort
     type: select
     label: Sort requested from site
@@ -59,6 +63,10 @@ settings:
     options:
       desc: desc
       asc: asc
+  - name: info_activity
+    type: info
+    label: Account Inactivity
+    default: "After 60 days of no activity, your account will be automatically deleted."
 
 login:
   path: /api/torrents
@@ -70,8 +78,8 @@ login:
 
 search:
   paths:
-    # https://github.com/HDInnovations/UNIT3D-Community-Edition/wiki/Torrent-API-(UNIT3D-v7.0.0)
-    # https://github.com/HDInnovations/UNIT3D-Community-Edition/blob/master/app/Http/Controllers/API/TorrentController.php#L349
+    # https://github.com/HDInnovations/UNIT3D-Community-Edition/wiki/Torrent-API-(UNIT3D-v8.x.x)
+    # https://github.com/HDInnovations/UNIT3D-Community-Edition/blob/master/app/Http/Controllers/API/TorrentController.php#L476
     - path: "/api/torrents/filter"
       response:
         type: json
@@ -109,8 +117,15 @@ search:
   fields:
     category:
       selector: category_id
-    title:
+    title_optional:
       selector: name
+    title_filename:
+      selector: "files[0].name"
+      optional: true
+    files:
+      selector: num_file
+    title:
+      text: "{{ if and (.Config.single_file_release_use_filename) (eq .Result.files \"1\") (.Result.title_filename) }}{{ .Result.title_filename }}{{ else }}{{ .Result.title_optional }}{{ end }}"
       filters:
         - name: re_replace # replace special characters with " " (space)
           args: ["[\\[!\"#$%&'()*+,\\-.\\/:;<=>?@[\\]^_`{|}~]", " "]
@@ -156,15 +171,11 @@ search:
       selector: meta.genres
       filters:
         - name: re_replace
-          args: ["(?i)^None$", ""]
-        - name: re_replace
           args: ["(?i)(televisione film)", "televisione_film"]
         - name: replace
           args: [" & ", "_&_"]
     description:
       text: "{{ .Result.genre }}"
-    files:
-      selector: num_file
     seeders:
       selector: seeders
     leechers:
@@ -203,4 +214,4 @@ search:
     minimumseedtime:
       # 6 day (as seconds = 6 x 24 x 60 x 60)
       text: 518400
-# json UNIT3D 7.2.5 (custom)
+# json UNIT3D 8.0.2 (custom)

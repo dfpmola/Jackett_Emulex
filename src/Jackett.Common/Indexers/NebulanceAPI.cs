@@ -20,8 +20,14 @@ namespace Jackett.Common.Indexers
     public class NebulanceAPI : IndexerBase
     {
         public override string Id => "nebulanceapi";
+        public override string[] Replaces => new[]
+        {
+            "transmithenet",
+            "nebulance"
+        };
         public override string Name => "NebulanceAPI";
         public override string Description => "At Nebulance we will change the way you think about TV. Using API.";
+        // Status: https://nbl.trackerstatus.info/
         public override string SiteLink { get; protected set; } = "https://nebulance.io/";
         public override string Language => "en-US";
         public override string Type => "private";
@@ -221,6 +227,8 @@ namespace Jackett.Common.Indexers
 
             if (response.ContentString != null && response.ContentString.Contains("Invalid params"))
                 throw new Exception("Invalid API Key configured");
+            if (response.ContentString != null && response.ContentString.Contains("API is down"))
+                throw new Exception("NBL API is down at the moment");
 
             char[] delimiters = { ',', ' ', '/', ')', '(', '.', ';', '[', ']', '"', '|', ':' };
 

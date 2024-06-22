@@ -16,6 +16,7 @@ namespace Jackett.Common.Indexers
     public class ExoticaZ : AvistazTracker
     {
         public override string Id => "exoticaz";
+        public override string[] Replaces => new[] { "yourexotic" };
         public override string Name => "ExoticaZ";
         public override string Description => "ExoticaZ (YourExotic) is a Private Torrent Tracker for 3X";
         public override string SiteLink { get; protected set; } = "https://exoticaz.to/";
@@ -24,7 +25,7 @@ namespace Jackett.Common.Indexers
             "https://torrents.yourexotic.com/"
         };
 
-        protected override string TimezoneOffset => "+01:00";
+        protected override string TimezoneOffset => "+02:00";
 
         public override TorznabCapabilities TorznabCaps => SetCapabilities();
 

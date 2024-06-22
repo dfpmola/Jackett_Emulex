@@ -97,6 +97,10 @@ settings:
     options:
       desc: desc
       asc: asc
+  - name: info_activity
+    type: info
+    label: Account Inactivity
+    default: "Inactive accounts will be deactivated after 7 weeks and deleted after another 3 weeks."
 
 login:
   path: login.php
@@ -191,7 +195,7 @@ search:
       selector: div.selection_unter_aaa
     downloadvolumefactor:
       case:
-        ":root:has(div.onlyup)": 0
+        ":root:has(div.onlyup)": 0 # GLobal Freeleech event
         "*": 1
     uploadvolumefactor:
       text: 1

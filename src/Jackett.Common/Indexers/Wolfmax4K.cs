@@ -8,7 +8,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using AngleSharp.Dom;
 using AngleSharp.Html.Parser;
 using Jackett.Common.Extensions;
 using Jackett.Common.Helpers;
@@ -18,6 +17,7 @@ using Jackett.Common.Services.Interfaces;
 using Jackett.Common.Utils.Clients;
 using Newtonsoft.Json.Linq;
 using NLog;
+using static Jackett.Common.Models.IndexerConfig.ConfigurationData;
 using WebClient = Jackett.Common.Utils.Clients.WebClient;
 
 namespace Jackett.Common.Indexers
@@ -28,7 +28,23 @@ namespace Jackett.Common.Indexers
         public override string Id => "wolfmax4k";
         public override string Name => "Wolfmax 4k";
         public override string Description => "Wolfmax 4k is a SPANISH public tracker for MOVIES / TV";
-        public override string SiteLink { get; protected set; } = "https://wolfmax4k.com/";
+
+        private string _siteLink = "https://wolfmax4k.com/";
+        private string SiteLinkSearch;
+
+        public override string SiteLink
+        {
+            get => _siteLink;
+            protected set
+            {
+                _siteLink = value;
+                var siteLinkUri = new UriBuilder(value);
+                siteLinkUri.Host = "admin." + siteLinkUri.Host;
+                siteLinkUri.Path = "/admin/admpctn/app/data.find.php";
+                SiteLinkSearch = siteLinkUri.Uri.ToString();
+            }
+        }
+
         public override string Language => "es-ES";
         public override string Type => "public";
 
@@ -57,8 +73,10 @@ namespace Jackett.Common.Indexers
                    cacheService: cs,
                    configData: new ConfigurationData())
         {
+            configData.AddDynamic("flaresolverr", new DisplayInfoConfigurationItem("FlareSolverr", "This site may use Cloudflare DDoS Protection, therefore Jackett requires <a href=\"https://github.com/Jackett/Jackett#configuring-flaresolverr\" target=\"_blank\">FlareSolverr</a> to access it."));
             // avoid Cloudflare too many requests limiter
             webclient.requestDelay = 2.1;
+            webclient.EmulateBrowser = false;
         }
 
         private static TorznabCapabilities SetCapabilities()
@@ -101,51 +119,50 @@ namespace Jackett.Common.Indexers
 
         protected override async Task<IEnumerable<ReleaseInfo>> PerformQuery(TorznabQuery query)
         {
-            var releases = new List<ReleaseInfo>();
-
             var searchToken = await GetSearchTokenAsync();
 
             query = SanitizeTorznabQuery(query);
 
-            var maxPages = query.SearchTerm.IsNullOrWhiteSpace() ? 1 : 3;
-
-            for (var i = 1; i <= maxPages; i++)
+            var body = new Dictionary<string, string>
             {
-                var result = await DoSeachAsync(query, searchToken, i);
-                try
-                {
-                    // Parse results
-                    var htmlParser = new HtmlParser();
-                    using var doc = htmlParser.ParseDocument(result.ContentString);
-                    var items = doc.QuerySelectorAll("#form-busqavanzada .card.card-movie");
-                    releases.AddRange(items.Select(elm => ExtractReleaseInfo(elm, query)).ToList()
-                                           .Where(x => x != null));
+                // wolfmax category&quality search is broken, do not use
+                { "pg", "" },
+                { "token", searchToken },
+                { "cidr", "" },
+                { "c", "0" },
+                { "q", query.SearchTerm },
+                { "l", query.SearchTerm.IsNullOrWhiteSpace() ? "100" : "1000" },
+            };
 
-                    // Check if has more pages
-                    var activePageElement = doc.QuerySelector(".btnpg.active");
-                    var nextPageElement = activePageElement?.NextElementSibling;
-                    if (activePageElement == null || nextPageElement == null ||
-                        activePageElement.GetAttribute("data-pg") == nextPageElement.GetAttribute("data-pg"))
-                    {
-                        break;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    OnParseError(result.ContentString, ex);
-                }
+            var result = await RequestWithCookiesAndRetryAsync(url: SiteLinkSearch, data: body, method: RequestType.POST, referer: SiteLink);
+            if (result.Status != HttpStatusCode.OK)
+                throw new ExceptionWithConfigData(result.ContentString, configData);
+
+            try
+            {
+                JObject jsonResponse = JObject.Parse(result.ContentString);
+                var data = jsonResponse.SelectToken("data.datafinds.0");
+                if (data == null)
+                    return new List<ReleaseInfo>();
+
+                return data.Values().Select(item => ExtractReleaseInfo(item as JObject, query)).ToList()
+                           .Where(x => x != null);
+            }
+            catch (Exception ex)
+            {
+                OnParseError(result.ContentString, ex);
             }
 
-            return releases;
+            return new List<ReleaseInfo>();
         }
 
         public override async Task<byte[]> Download(Uri link)
         {
-            var wmPage = await RequestWithCookiesAndRetryAsync(link.ToString(), emulateBrowser: false);
+            var wmPage = await RequestWithCookiesAndRetryAsync(link.ToString());
             var wmDoc = new HtmlParser().ParseDocument(wmPage.ContentString);
-            var enlacitoUrl = wmDoc.QuerySelector(".app-message a")?.GetAttribute("href");
+            var enlacitoUrl = wmDoc.QuerySelector(".app-message a:not(.buttonPassword)")?.GetAttribute("href");
 
-            var enlacitoPage = await RequestWithCookiesAndRetryAsync(enlacitoUrl, emulateBrowser: false, referer: SiteLink);
+            var enlacitoPage = await RequestWithCookiesAndRetryAsync(enlacitoUrl, referer: SiteLink);
             var enlacitoDoc = new HtmlParser().ParseDocument(enlacitoPage.ContentString);
             var enlacitoFormUrl = enlacitoDoc.QuerySelector("form").GetAttribute("action");
             var enlacitoFormLinkser = enlacitoDoc.QuerySelector("input[name=\"linkser\"]").GetAttribute("value");
@@ -155,7 +172,7 @@ namespace Jackett.Common.Indexers
             {
                 { "linkser", enlacitoFormLinkser }
             };
-            var enlacito2Page = await RequestWithCookiesAndRetryAsync(enlacitoFormUrl, data: body, method: RequestType.POST, emulateBrowser: false);
+            var enlacito2Page = await RequestWithCookiesAndRetryAsync(enlacitoFormUrl, data: body, method: RequestType.POST);
             var regex = new Regex("var link_out = \"(.*)\"");
             var v = regex.Match(enlacito2Page.ContentString);
 
@@ -163,33 +180,16 @@ namespace Jackett.Common.Indexers
             var slink = Encoding.UTF8.GetString(Convert.FromBase64String(linkOut));
             var ulink = OpenSSLDecrypt(slink, TorrentLinkEncryptionKey);
 
-            var result = await RequestWithCookiesAndRetryAsync(ulink, emulateBrowser: false);
+            var result = await RequestWithCookiesAndRetryAsync(ulink);
             return result.ContentBytes;
         }
 
         private async Task<string> GetSearchTokenAsync()
         {
-            var resultIdx = await RequestWithCookiesAndRetryAsync(SiteLink, emulateBrowser: false);
+            var resultIdx = await RequestWithCookiesAndRetryAsync(SiteLink);
             var htmlParser = new HtmlParser();
             using var myDoc = htmlParser.ParseDocument(resultIdx.ContentString);
             return myDoc.QuerySelector("input[name='token']")?.GetAttribute("value");
-        }
-
-        private async Task<WebResult> DoSeachAsync(TorznabQuery query, string searchToken, int page = 1)
-        {
-            var body = new Dictionary<string, string>
-            {
-                // wolfmax category&quality search is broken, do not use
-                { "_ACTION", "buscar" },
-                { "token", searchToken },
-                { "q", query.SearchTerm },
-                { "pgb", page.ToString() }
-            };
-
-            var result = await RequestWithCookiesAndRetryAsync(SiteLink + "buscar", data: body, method: RequestType.POST, emulateBrowser: false);
-            if (result.Status != HttpStatusCode.OK)
-                throw new ExceptionWithConfigData(result.ContentString, configData);
-            return result;
         }
 
         private static TorznabQuery SanitizeTorznabQuery(TorznabQuery query)
@@ -206,7 +206,6 @@ namespace Jackett.Common.Indexers
             // replace punctuation symbols with spaces
             // searchTerm = Marco Polo 2014
             searchTerm = Regex.Replace(searchTerm, @"[-._\(\)@/\\\[\]\+\%]", " ");
-            searchTerm = Regex.Replace(searchTerm, @"\s+", " ");
             searchTerm = searchTerm.Trim();
 
             // we parse the year and remove it from search
@@ -227,7 +226,7 @@ namespace Jackett.Common.Indexers
             return query;
         }
 
-        private ReleaseInfo ExtractReleaseInfo(IElement cardElement, TorznabQuery query)
+        private ReleaseInfo ExtractReleaseInfo(JObject item, TorznabQuery query)
         {
             // https://wolfmax4k.com/descargar/peliculas-castellano/bebe-made-in-china-2020-/blurayrip-ac3-5-1/
             // https://wolfmax4k.com/descargar/la-sala-de-torturas-chinas/
@@ -240,9 +239,17 @@ namespace Jackett.Common.Indexers
             // https://wolfmax4k.com/descargar/programas-tv/la-isla-de-las-tentaciones/temporada-7/capitulo-10/
             // https://wolfmax4k.com/descargar/serie-1080p/historial-delictivo/temporada-1/capitulo-02/
             // https://wolfmax4k.com/descargar-pelicula/avatar-v-extendida/bluray-1080p/
+            // https://wolfmax4k.com/descargar/programas-tv/091-alerta-policia/hdtv-720p-ac3-5-1/
+            // https://wolfmax4k.com/descargar/telenovelas/karagul/hdtv/karagul-tierra-de-secretos/2024-06-12/
+            // https://wolfmax4k.com/descargar-seriehd/archer/capitulo-88/hdtv-720p-ac3-5-1/
+            // https://wolfmax4k.com/descargar/series-animacion-y-manga/archer/temporada-13/capitulo-08/
 
-            var quality = cardElement.QuerySelector(".quality")?.Text().Trim();
-            if (quality.IsNullOrWhiteSpace())
+            var torrentName = item.SelectToken("torrentName")?.ToString();
+            var guid = item.SelectToken("guid")?.ToString();
+            var quality = item.SelectToken("calidad")?.ToString();
+            var image = item.SelectToken("image")?.ToString();
+
+            if (torrentName.IsNullOrWhiteSpace() || guid.IsNullOrWhiteSpace() || quality.IsNullOrWhiteSpace())
             {
                 // Some torrents has no quality.
                 // Ignored it because they are torrents that are not well categorized
@@ -250,10 +257,11 @@ namespace Jackett.Common.Indexers
                 return null;
             }
 
-            var link = new Uri(new Uri(SiteLink), cardElement.GetAttribute("href"));
-            var title = ParseTitle(cardElement) + " SPANISH " + quality;
+            quality = ParseQuality(quality);
+            var link = new Uri(new Uri(SiteLink), guid);
+            var title = ParseTitle(torrentName, guid, quality);
             var episodes = GetEpisodesFromTitle(title);
-            var wolfmaxCategory = ParseCategory(cardElement);
+            var wolfmaxCategory = ParseCategory(torrentName, guid, quality);
 
             var releaseInfo = new ReleaseInfo
             {
@@ -269,6 +277,9 @@ namespace Jackett.Common.Indexers
                 DownloadVolumeFactor = 0,
                 UploadVolumeFactor = 1
             };
+
+            if (image.IsNotNullOrWhiteSpace() && !image.Contains("/no-imagen.jpg"))
+                releaseInfo.Poster = new Uri(image);
 
             // Filter by category
             if (query.Categories.Any() && !query.Categories.Intersect(releaseInfo.Category).Any())
@@ -291,26 +302,37 @@ namespace Jackett.Common.Indexers
             return releaseInfo;
         }
 
-        private string ParseTitle(IElement cardElement)
+        private string ParseTitle(string torrentName, string guid, string quality)
         {
-            var title = cardElement.QuerySelector(".title")?.Text();
-            title = Regex.Replace(title, @"(\- )?Temp\.\s+?\d+?", "").Trim();
-            var seasonEpisode = ParseSeasonAndEpisode(cardElement);
+            var title = Regex.Replace(torrentName, @"(\- )?(Tem.|Temp.|Temporada)\s+?\d+?", "");
+            title = Regex.Replace(title, @"\[(Esp|Spanish)\]", "", RegexOptions.IgnoreCase);
+            title = Regex.Replace(title, @"\(?wolfmax4k\.com\)?", "", RegexOptions.IgnoreCase);
+
+            var seasonEpisode = ParseSeasonAndEpisode(torrentName, guid);
             if (seasonEpisode.IsNotNullOrWhiteSpace())
             {
+                // only replace Cap. if it could be parsed
+                title = Regex.Replace(title, @"\[Cap\.(\s+)?(\d+)\]", "").Trim();
                 title += " " + seasonEpisode;
             }
 
-            return title;
+            // remove the "quality" from the torrentName and
+            // adds it from the "quality" field of the api
+            title = Regex.Replace(title, @"\[(.*)(HDTV|Bluray|4k|DVDRIP)(.*)\]", "",
+                                  RegexOptions.IgnoreCase);
+
+            title = title + " [" + quality + "] SPANISH";
+
+            return title.Trim();
         }
 
-        private string ParseCategory(IElement cardElement)
+        private string ParseCategory(string torrentName, string guid, string quality)
         {
-            // If the url contains "/serie" or contains "/temporada-" & "/capitulo-" it's a tv show
+            // If the url contains "/serie" or contains "/temporada-" & "/capitulo-"
+            // or contains "Cap." in the torrentName it's a tv show
             // If not it's a movie
-            var link = cardElement.GetAttribute("href");
-            var quality = cardElement.QuerySelector(".quality")?.Text();
-            var isTvShow = link.Contains("/serie") || (link.Contains("/temporada-") && link.Contains("/capitulo-"));
+            var isTvShow = guid.Contains("/serie") || (guid.Contains("/temporada-") && guid.Contains("/capitulo-")) ||
+                           Regex.IsMatch(torrentName, @"Cap\.(\s+)?(\d+)", RegexOptions.IgnoreCase);
 
             string wolfmaxCat;
             if (isTvShow)
@@ -323,7 +345,7 @@ namespace Jackett.Common.Indexers
                 {
                     wolfmaxCat = Wolfmax4KCatType.Serie1080;
                 }
-                else if (quality.ToLower().Contains("4k"))
+                else if (quality.ToLower().Contains("4k") || quality.ToLower().Contains("2160p"))
                 {
                     wolfmaxCat = Wolfmax4KCatType.Serie4K;
                 }
@@ -342,7 +364,7 @@ namespace Jackett.Common.Indexers
                 {
                     wolfmaxCat = Wolfmax4KCatType.Pelicula1080;
                 }
-                else if (quality.ToLower().Contains("4k"))
+                else if (quality.ToLower().Contains("4k") || quality.ToLower().Contains("2160p"))
                 {
                     wolfmaxCat = Wolfmax4KCatType.Pelicula4K;
                 }
@@ -355,25 +377,65 @@ namespace Jackett.Common.Indexers
             return wolfmaxCat;
         }
 
-        private string ParseSeasonAndEpisode(IElement cardElement)
+        private string ParseQuality(string quality)
         {
-            var link = cardElement.GetAttribute("href");
+            return quality switch
+            {
+                "4KWebrip" => "WEBRip-2160p",
+                _ => quality
+            };
+        }
+
+        private string ParseSeasonAndEpisode(string torrentName, string guid)
+        {
             var result = "";
 
-            var matchSeason = new Regex(@"/temporada-(\d+)").Match(link);
+            var matchSeason = new Regex(@"/temporada-(\d+)").Match(guid);
             if (matchSeason.Success)
             {
                 result += "S" + matchSeason.Groups[1].Value.PadLeft(2, '0');
             }
 
-            var matchEpisode = new Regex(@"/capitulo-(\d+)(-al-(\d+))?/").Match(link);
-            if (matchEpisode.Success)
+            var matchEpisode = new Regex(@"/capitulo-(\d+)(-al-(\d+))?/").Match(guid);
+            if (matchSeason.Success && matchEpisode.Success)
             {
                 result += "E" + matchEpisode.Groups[1].Value.PadLeft(2, '0');
                 if (matchEpisode.Groups[3].Value.IsNotNullOrWhiteSpace())
                 {
                     result += "-E" + matchEpisode.Groups[3].Value.PadLeft(2, '0');
                 }
+            }
+
+            if (result.IsNotNullOrWhiteSpace())
+            {
+                return result;
+            }
+
+            // If no season/episde info found in guid, fallback to torrentName's "Cap." info
+            // Caps longer than 4 digits are not supported,
+            // We have not found any examples and
+            // the assumption we are making to get the season and episode may not be true
+            // We assume that all episodes are from the same season
+            // Eg: 091 Alerta Policia [HDTV 720p][Cap.601]
+            //     Karagul [HDTV][Cap.1251]
+            //     La Familia Addams - Temporada 1 [DVDRIP][Cap. 120_121_122 FINAL][Spanish]
+            var matchCaps = new Regex(@"Cap\.\s*([\d_]+)", RegexOptions.IgnoreCase).Match(torrentName);
+            if (!matchCaps.Success)
+            {
+                return result;
+            }
+
+            var caps = matchCaps.Groups[1].Value.Trim().Split('_')
+                                .Select(cap => cap.PadLeft(4, '0'))
+                                .Where(cap => cap.Length == 4).ToList();
+            var season = caps.First().Substring(0, 2);
+            var episodes = caps.Select(cap => cap.Substring(2)).ToList();
+
+            result = "S" + season + "E" + episodes.First();
+
+            if (episodes.Count > 1)
+            {
+                result += "-E" + episodes.Last();
             }
 
             return result;
@@ -388,7 +450,7 @@ namespace Jackett.Common.Indexers
                 return new List<int> { vals[0] };
             }
 
-            if (vals.Count == 2)
+            if (vals.Count == 2 && vals[1] > vals[0])
             {
                 return Enumerable.Range(vals[0], vals[1] - vals[0] + 1).ToList();
             }

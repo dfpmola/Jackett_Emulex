@@ -25,6 +25,7 @@ namespace Jackett.Common.Indexers
         public override string Id => "gazellegamesapi";
         public override string Name => "GazelleGames (API)";
         public override string Description => "A gaming tracker";
+        // Status: https://ggn.trackerstatus.info/
         public override string SiteLink { get; protected set; } = "https://gazellegames.net/";
         public override string Language => "en-US";
         public override string Type => "private";
@@ -44,6 +45,7 @@ namespace Jackett.Common.Indexers
                    p: ps,
                    cs: cs,
                    supportsFreeleechTokens: true,
+                   supportsFreeleechOnly: true,
                    has2Fa: false,
                    useApiKey: true,
                    usePassKey: true,
@@ -117,6 +119,25 @@ namespace Jackett.Common.Indexers
             // Amstrad
             caps.Categories.AddCategoryMapping("Amstrad CPC", TorznabCatType.ConsoleOther, "Amstrad CPC");
 
+            // Bandai
+            caps.Categories.AddCategoryMapping("Bandai WonderSwan", TorznabCatType.ConsoleOther, "Bandai WonderSwan");
+            caps.Categories.AddCategoryMapping("Bandai WonderSwan Color", TorznabCatType.ConsoleOther, "Bandai WonderSwan Color");
+            // caps.Categories.AddCategoryMapping("Apple Bandai Pippin", TorznabCatType.ConsoleOther, "Apple Bandai Pippin");  // repeated
+
+            // Commodore
+            caps.Categories.AddCategoryMapping("Commodore 64", TorznabCatType.ConsoleOther, "Commodore 64");
+            caps.Categories.AddCategoryMapping("Commodore 128", TorznabCatType.ConsoleOther, "Commodore 128");
+            caps.Categories.AddCategoryMapping("Commodore Amiga", TorznabCatType.ConsoleOther, "Commodore Amiga");
+            caps.Categories.AddCategoryMapping("Amiga CD32", TorznabCatType.ConsoleOther, "Amiga CD32");
+            caps.Categories.AddCategoryMapping("Commodore Plus-4", TorznabCatType.ConsoleOther, "Commodore Plus-4");
+            caps.Categories.AddCategoryMapping("Commodore VIC-20", TorznabCatType.ConsoleOther, "Commodore VIC-20");
+
+            // NEC
+            caps.Categories.AddCategoryMapping("NEC PC-98", TorznabCatType.ConsoleOther, "NEC PC-98");
+            caps.Categories.AddCategoryMapping("NEC PC-FX", TorznabCatType.ConsoleOther, "NEC PC-FX");
+            caps.Categories.AddCategoryMapping("NEC SuperGrafx", TorznabCatType.ConsoleOther, "NEC SuperGrafx");
+            caps.Categories.AddCategoryMapping("NEC TurboGrafx-16", TorznabCatType.ConsoleOther, "NEC TurboGrafx-16");
+
             // Sinclair
             caps.Categories.AddCategoryMapping("ZX Spectrum", TorznabCatType.ConsoleOther, "ZX Spectrum");
 
@@ -140,16 +161,9 @@ namespace Jackett.Common.Indexers
 
             // Other
             caps.Categories.AddCategoryMapping("3DO", TorznabCatType.ConsoleOther, "3DO");
-            caps.Categories.AddCategoryMapping("Bandai WonderSwan", TorznabCatType.ConsoleOther, "Bandai WonderSwan");
-            caps.Categories.AddCategoryMapping("Bandai WonderSwan Color", TorznabCatType.ConsoleOther, "Bandai WonderSwan Color");
             caps.Categories.AddCategoryMapping("Casio Loopy", TorznabCatType.ConsoleOther, "Casio Loopy");
             caps.Categories.AddCategoryMapping("Casio PV-1000", TorznabCatType.ConsoleOther, "Casio PV-1000");
             caps.Categories.AddCategoryMapping("Colecovision", TorznabCatType.ConsoleOther, "Colecovision");
-            caps.Categories.AddCategoryMapping("Commodore 64", TorznabCatType.ConsoleOther, "Commodore 64");
-            caps.Categories.AddCategoryMapping("Commodore 128", TorznabCatType.ConsoleOther, "Commodore 128");
-            caps.Categories.AddCategoryMapping("Commodore Amiga", TorznabCatType.ConsoleOther, "Commodore Amiga");
-            caps.Categories.AddCategoryMapping("Commodore Plus-4", TorznabCatType.ConsoleOther, "Commodore Plus-4");
-            caps.Categories.AddCategoryMapping("Commodore VIC-20", TorznabCatType.ConsoleOther, "Commodore VIC-20");
             caps.Categories.AddCategoryMapping("Emerson Arcadia 2001", TorznabCatType.ConsoleOther, "Emerson Arcadia 2001");
             caps.Categories.AddCategoryMapping("Entex Adventure Vision", TorznabCatType.ConsoleOther, "Entex Adventure Vision");
             caps.Categories.AddCategoryMapping("Epoch Super Casette Vision", TorznabCatType.ConsoleOther, "Epoch Super Casette Vision");
@@ -164,13 +178,11 @@ namespace Jackett.Common.Indexers
             caps.Categories.AddCategoryMapping("Mattel Intellivision", TorznabCatType.ConsoleOther, "Mattel Intellivision");
             caps.Categories.AddCategoryMapping("Memotech MTX", TorznabCatType.ConsoleOther, "Memotech MTX");
             caps.Categories.AddCategoryMapping("Miles Gordon Sam Coupe", TorznabCatType.ConsoleOther, "Miles Gordon Sam Coupe");
-            caps.Categories.AddCategoryMapping("NEC PC-98", TorznabCatType.ConsoleOther, "NEC PC-98");
-            caps.Categories.AddCategoryMapping("NEC PC-FX", TorznabCatType.ConsoleOther, "NEC PC-FX");
-            caps.Categories.AddCategoryMapping("NEC SuperGrafx", TorznabCatType.ConsoleOther, "NEC SuperGrafx");
-            caps.Categories.AddCategoryMapping("NEC TurboGrafx-16", TorznabCatType.ConsoleOther, "NEC TurboGrafx-16");
             caps.Categories.AddCategoryMapping("Nokia N-Gage", TorznabCatType.ConsoleOther, "Nokia N-Gage");
+            caps.Categories.AddCategoryMapping("Oculus Quest", TorznabCatType.ConsoleOther, "Oculus Quest");
             caps.Categories.AddCategoryMapping("Ouya", TorznabCatType.ConsoleOther, "Ouya");
             caps.Categories.AddCategoryMapping("Philips Videopac+", TorznabCatType.ConsoleOther, "Philips Videopac+");
+            caps.Categories.AddCategoryMapping("Philips CD-i", TorznabCatType.ConsoleOther, "Philips CD-i");
             caps.Categories.AddCategoryMapping("Phone/PDA", TorznabCatType.ConsoleOther, "Phone/PDA");
             caps.Categories.AddCategoryMapping("RCA Studio II", TorznabCatType.ConsoleOther, "RCA Studio II");
             caps.Categories.AddCategoryMapping("Sharp X1", TorznabCatType.ConsoleOther, "Sharp X1");
@@ -226,6 +238,11 @@ namespace Jackett.Common.Indexers
                 queryCollection.Add($"artistcheck[{i++}]", cat);
             }
 
+            if (configData.FreeleechOnly is { Value: true })
+            {
+                queryCollection.Set("freetorrent", "1");
+            }
+
             // remove . as not used in titles
             searchUrl += "?" + queryCollection.GetQueryString();
 
@@ -255,9 +272,10 @@ namespace Jackett.Common.Indexers
 
                 foreach (var gObj in JObject.FromObject(json["response"]))
                 {
+                    var groupId = int.Parse(gObj.Key);
                     var group = gObj.Value as JObject;
 
-                    if (group["Torrents"].Type == JTokenType.Array && group["Torrents"] is JArray array && array.Count == 0)
+                    if (group["Torrents"].Type == JTokenType.Array && group["Torrents"] is JArray { Count: 0 })
                     {
                         continue;
                     }
@@ -270,15 +288,27 @@ namespace Jackett.Common.Indexers
                     foreach (var tObj in JObject.FromObject(group["Torrents"]))
                     {
                         var torrent = tObj.Value as JObject;
-                        var torrentId = torrent.Value<string>("ID");
+
+                        var torrentFreeTorrent = torrent.Value<string>("FreeTorrent");
+                        var freeTorrent = torrentFreeTorrent.IsNotNullOrWhiteSpace() && int.TryParse(torrentFreeTorrent, out var freeValue) ? freeValue : 0;
+
+                        var downloadVolumeFactor = freeTorrent >= 1 ? 0 : 1;
+
+                        // Skip non-freeleech results when freeleech only is set
+                        if (configData.FreeleechOnly is { Value: true } && downloadVolumeFactor != 0.0)
+                        {
+                            continue;
+                        }
+
+                        var torrentId = torrent.Value<int>("ID");
 
                         if (categories.Length == 0)
                         {
                             categories = MapTrackerCatToNewznab(torrent.Value<string>("CategoryID")).ToArray();
                         }
 
-                        var details = new Uri(DetailsUrl + torrentId);
-                        var link = new Uri(DownloadUrl + torrentId);
+                        var details = GetInfoUrl(torrentId, groupId);
+                        var link = GetDownloadUrl(torrentId, false);
 
                         var title = WebUtility.HtmlDecode(torrent.Value<string>("ReleaseTitle"));
                         var groupYear = group.Value<int>("year");
@@ -324,8 +354,6 @@ namespace Jackett.Common.Indexers
                             title += $" [{string.Join(", ", tags)}]";
                         }
 
-                        var torrentFreeTorrent = torrent.Value<string>("FreeTorrent");
-                        var freeTorrent = torrentFreeTorrent.IsNotNullOrWhiteSpace() && int.TryParse(torrentFreeTorrent, out var freeValue) ? freeValue : 0;
 
                         var release = new ReleaseInfo
                         {
@@ -340,8 +368,8 @@ namespace Jackett.Common.Indexers
                             Seeders = torrent.Value<int>("Seeders"),
                             Peers = torrent.Value<int>("Seeders") + torrent.Value<int>("Leechers"),
                             Files = torrent.Value<int>("FileCount"),
+                            DownloadVolumeFactor = downloadVolumeFactor,
                             UploadVolumeFactor = freeTorrent >= 2 ? 0 : 1,
-                            DownloadVolumeFactor = freeTorrent >= 1 ? 0 : 1,
                             MinimumRatio = 1,
                             MinimumSeedTime = 288000, // 80 hours
                         };
@@ -354,7 +382,10 @@ namespace Jackett.Common.Indexers
                 OnParseError(response.ContentString, ex);
             }
 
-            return releases;
+            // order by date
+            return releases
+                   .OrderByDescending(o => o.PublishDate)
+                   .ToArray();
         }
     }
 }

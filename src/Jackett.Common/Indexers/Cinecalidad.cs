@@ -14,6 +14,7 @@ using Jackett.Common.Services.Interfaces;
 using Jackett.Common.Utils.Clients;
 using Newtonsoft.Json.Linq;
 using NLog;
+using static Jackett.Common.Models.IndexerConfig.ConfigurationData;
 using WebClient = Jackett.Common.Utils.Clients.WebClient;
 
 namespace Jackett.Common.Indexers
@@ -24,10 +25,9 @@ namespace Jackett.Common.Indexers
         public override string Id => "cinecalidad";
         public override string Name => "Cinecalidad";
         public override string Description => "Películas Full UHD/HD en Latino Dual.";
-        public override string SiteLink { get; protected set; } = "https://cinecalidad.fi/";
+        public override string SiteLink { get; protected set; } = "https://www.cinecalidad.vg/";
         public override string[] LegacySiteLinks => new[]
         {
-            "https://wwv.cinecalidad.foo/",
             "https://wv.cinecalidad.foo/",
             "https://vwv.cinecalidad.foo/",
             "https://wzw.cinecalidad.foo/",
@@ -42,6 +42,7 @@ namespace Jackett.Common.Indexers
             "https://wv.cinecalidad.so/",
             "https://vvvv.cinecalidad.so/",
             "https://wvvv.cinecalidad.so/",
+            "https://cinecalidad.fi/",
         };
         public override string Language => "es-419";
         public override string Type => "public";
@@ -60,6 +61,7 @@ namespace Jackett.Common.Indexers
                    cacheService: cs,
                    configData: new ConfigurationData())
         {
+            configData.AddDynamic("flaresolverr", new DisplayInfoConfigurationItem("FlareSolverr", "This site may use Cloudflare DDoS Protection, therefore Jackett requires <a href=\"https://github.com/Jackett/Jackett#configuring-flaresolverr\" target=\"_blank\">FlareSolverr</a> to access it."));
         }
 
         private TorznabCapabilities SetCapabilities()

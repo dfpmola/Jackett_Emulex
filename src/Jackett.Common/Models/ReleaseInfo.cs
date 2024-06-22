@@ -54,6 +54,7 @@ namespace Jackett.Common.Models
 
         public ReleaseInfo()
         {
+            Category = new List<int>();
             Languages = new List<string>();
             Subs = new List<string>();
         }
@@ -97,6 +98,7 @@ namespace Jackett.Common.Models
             MinimumSeedTime = copyFrom.MinimumSeedTime;
             DownloadVolumeFactor = copyFrom.DownloadVolumeFactor;
             UploadVolumeFactor = copyFrom.UploadVolumeFactor;
+            Origin = copyFrom.Origin;
         }
 
         public virtual object Clone() => new ReleaseInfo(this);

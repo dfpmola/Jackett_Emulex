@@ -23,7 +23,7 @@ caps:
     - {id: 49, cat: Movies/UHD, desc: "Movies: 4k"}
     - {id: 46, cat: Movies/3D, desc: "Movies: 3D"}
     - {id: 24, cat: Movies, desc: "Movies: Packs"}
-    - {id: 28, cat: Movies, desc: "Movies: Cartoons"}
+    - {id: 28, cat: Movies/Other, desc: "Movies: Cartoons"}
     - {id: 47, cat: XXX, desc: "Movies: XXX"}
     - {id: 41, cat: TV/HD, desc: "TV: HD"}
     - {id: 52, cat: TV/WEB-DL, desc: "TV: WEB-DL"}
@@ -37,6 +37,7 @@ caps:
     - {id: 54, cat: Console, desc: "Games: PsP"}
     - {id: 76, cat: Audio/Audiobook, desc: "Books: Audio"}
     - {id: 77, cat: Books/EBook, desc: "Books: eBooks"}
+    - {id: 78, cat: TV/UHD, desc: "TV: 4k"}
 
   modes:
     search: [q]
@@ -76,6 +77,10 @@ settings:
     type: info
     label: Search results
     default: "If you are not getting results, then access the site with your browser and mark as read all PMs."
+  - name: info_activity
+    type: info
+    label: Account Inactivity
+    default: "Be active here, you must login at least once a month. Also, not downloading anything is considered being inactive (except if you're an uploader or VIP). The accounts inactive for 3 months are deleted."
 
 login:
   path: account-login.php
@@ -91,20 +96,17 @@ login:
 
 search:
   paths:
+    # https://rptscene.xyz/torrents-search.php?c22=1&c23=1&c76=1&c77=1&search=&incldead=0&freeleech=0&inclrosub=0
     - path: torrents-search.php
   inputs:
-    $raw: "{{ range .Categories }}filter_cat[{{.}}]=1&{{end}}"
+    $raw: "{{ range .Categories }}c{{.}}=1&{{end}}"
     search: "{{ if .Query.IMDBID }}{{ .Query.IMDBID }}{{ else }}{{ .Keywords }}{{ end }}" # for dashboard imdbid search
-    # 0 both 1 local 2 external
-    inclexternal: 0
     # 0 only active 1 incl dead 2 only dead
     incldead: 1
     # 0 all 1 not freeleech 2 only freeleech
     freeleech: "{{ if .Config.freeleech }}2{{ else }}0{{ end }}"
-    # 0 all 1 english 2 french 3 german 4 italian 5 japanese 6 spanish 7 russian 8 other
     sort: "{{ .Config.sort }}"
     order: "{{ .Config.type }}"
-    # can search for only one at a time of name, genre or imdbid
 
   rows:
     selector: table.ttable_headinner > tbody > tr

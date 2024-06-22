@@ -5,6 +5,7 @@ description: "Torrent[CORE] is a Public DHT Crawler"
 language: en-US
 type: public
 encoding: UTF-8
+requestDelay: 10.1
 links:
   - https://torrentcore.xyz/
 
@@ -40,7 +41,9 @@ caps:
     music-search: [q]
     book-search: [q]
 
-settings: []
+settings:
+  - name: info_flaresolverr
+    type: info_flaresolverr
 
 download:
   infohash:
@@ -59,6 +62,12 @@ search:
   paths:
     - path: "{{ if .Keywords }}search?s={{ .Keywords }}{{ else }}index{{ end }}"
     # search is an exact match, there are no wild cards, or +word or AND/OR, and spaces and dots are treated uniquely
+  error:
+    - selector: :root:contains("Service Unavailable")
+    - selector: :root:contains("Connection failed")
+      message:
+        text: "Connection failed: Connection refused"
+    - selector: :root:contains("[Anti-DDoS]")
 
   rows:
     selector: div.content font[color="purple"], div.content font[color="orange"]:has(a), div.content font[color="gray"], div.content font[color="white"]

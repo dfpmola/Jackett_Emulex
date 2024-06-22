@@ -5,7 +5,7 @@ description: "PTTime is a ratioless CHINESE Private Torrent Tracker for HD MOVIE
 language: zh-CN
 type: private
 encoding: UTF-8
-requestDelay: 2
+requestDelay: 5
 links:
   - https://www.pttime.org/
 
@@ -76,6 +76,10 @@ settings:
     type: info
     label: Results Per Page
     default: For best results, change the <b>Torrents per page:</b> setting to <b>100</b> on your account profile.
+  - name: info_activity
+    type: info
+    label: Account Inactivity
+    default: "Account retention rules:<ol><li>Veteran User and above will be retained forever</li><li>Elite User and above will not have their account deleted after parking (in the control panel).</li><li>Users with a parked account will be deleted if they do not log in for 400 consecutive days</li><li>Users with a non-parked account will be deleted if they do not log in for 150 consecutive days</li><li>Users who have no traffic (i.e. upload/download data are both 0) will be deleted if they do not log in for 100 consecutive days.</li></ol>"
 
 login:
   path: takelogin.php

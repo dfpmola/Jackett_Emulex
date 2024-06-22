@@ -12,8 +12,12 @@ legacylinks:
 
 caps:
   categorymappings:
-    - {id: 1, cat: Movies, desc: "Movie"}
+    - {id: 1, cat: Movies, desc: "Film"}
     - {id: 2, cat: TV, desc: "TV"}
+    - {id: 3, cat: Movies/Foreign, desc: "Foreign Film"}
+    - {id: 4, cat: TV/Foreign, desc: "Foreign TV"}
+    - {id: 5, cat: Movies/Other, desc: "Opera & Musical"}
+    - {id: 6, cat: Movies/Foreign, desc: "Asian Film"}
 
   modes:
     search: [q]
@@ -32,6 +36,10 @@ settings:
     type: checkbox
     label: Search freeleech only
     default: false
+  - name: single_file_release_use_filename
+    type: checkbox
+    label: Use filename as title for single file releases
+    default: true
   - name: sort
     type: select
     label: Sort requested from site
@@ -48,6 +56,10 @@ settings:
     options:
       desc: desc
       asc: asc
+  - name: info_activity
+    type: info
+    label: Account Inactivity
+    default: "With 2FA enabled, there are no specific requirements for uploading, downloading, or posting. Your membership continues based on the staff's fair assessment of your overall activity and contributions."
 
 login:
   path: /api/torrents
@@ -59,8 +71,8 @@ login:
 
 search:
   paths:
-    # https://github.com/HDInnovations/UNIT3D-Community-Edition/wiki/Torrent-API-(UNIT3D-v7.0.0)
-    # https://github.com/HDInnovations/UNIT3D-Community-Edition/blob/master/app/Http/Controllers/API/TorrentController.php#L349
+    # https://github.com/HDInnovations/UNIT3D-Community-Edition/wiki/Torrent-API-(UNIT3D-v8.x.x)
+    # https://github.com/HDInnovations/UNIT3D-Community-Edition/blob/master/app/Http/Controllers/API/TorrentController.php#L476
     - path: "/api/torrents/filter"
       response:
         type: json
@@ -93,8 +105,15 @@ search:
   fields:
     category:
       selector: category_id
-    title:
+    title_optional:
       selector: name
+    title_filename:
+      selector: "files[0].name"
+      optional: true
+    files:
+      selector: num_file
+    title:
+      text: "{{ if and (.Config.single_file_release_use_filename) (eq .Result.files \"1\") (.Result.title_filename) }}{{ .Result.title_filename }}{{ else }}{{ .Result.title_optional }}{{ end }}"
     details:
       selector: details_link
     download:
@@ -116,8 +135,6 @@ search:
       selector: meta.genres
       filters:
         - name: re_replace
-          args: ["(?i)^None$", ""]
-        - name: re_replace
           args: ["(?i)(Science Fiction)", "Science_Fiction"]
         - name: re_replace
           args: ["(?i)(TV Movie)", "TV_Movie"]
@@ -125,8 +142,6 @@ search:
           args: [" & ", "_&_"]
     description:
       text: "{{ .Result.genre }}"
-    files:
-      selector: num_file
     seeders:
       selector: seeders
     leechers:
@@ -159,10 +174,10 @@ search:
       case:
         False: 1 # normal
         True: 2 # double
-# global MR is 0.4 but torrents must be seeded for 7 days regardless of ratio
+# global MR is 0.6 but torrents must be seeded for 7 days regardless of ratio
 #    minimumratio:
-#      text: 0.4
+#      text: 0.6
     minimumseedtime:
-      # 7 days (as seconds = 7 x 24 x 60 x 60)
-      text: 604800
-# json UNIT3D 7.2.5
+      # 3 days (as seconds = 3 x 24 x 60 x 60)
+      text: 259200
+# json UNIT3D 8.1.0

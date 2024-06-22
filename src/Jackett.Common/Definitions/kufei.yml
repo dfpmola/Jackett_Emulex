@@ -1,6 +1,6 @@
 ---
 id: kufei
-name: Kufei
+name: Kufei (库非)
 description: "Kufei (库非) is a CHINESE Private Torrent Tracker for MOVIES / TV / GENERAL"
 language: zh-CN
 type: private
@@ -200,4 +200,4 @@ search:
     description:
       selector: td:nth-child(2)
       remove: a, b, font, img, span
-# NexusPHP v1.8.9 2023-11-15
+# NexusPHP v1.8.12 2024-04-13

@@ -7,29 +7,23 @@ language: en-US
 encoding: UTF-8
 requestDelay: 2.5 # 2.5 requests per second (2 causes problems)
 links:
-  # dont forget to update the details, download and poster replace args
+  # if the primary domain changes then don't forget to update the details, download and poster replace args
   - https://yts.mx/
+# official domain list are at https://yifystatus.com/ and  official proxies list are at https://ytsproxies.com/
   - https://yts.lt/
   - https://yts.am/
   - https://yts.ag/
-  - https://yts.unblockit.dad/
-# unofficial proxies below; allowed as meeting requisite criterion.
+  - https://yts.unblockit.black/
   - https://yts.unblockninja.com/
   - https://yts.ninjaproxy1.com/
   - https://yts.proxyninja.org/
+  - https://yts.proxyninja.net/
   - https://yts.torrentbay.st/
-# official domain list are at https://yifystatus.com/ and  official proxies list are at https://ytsproxies.com/
+  - https://yts.torrentsbay.org/
 legacylinks:
-  - https://yts.nocensor.art/
-  - https://yts.unblockit.bio/
-  - https://yts.unblockit.boo/
-  - https://yts.mrunblock.guru/
-  - https://yts.unblockit.click/
   - https://yts.unblockit.asia/
   - https://yts.unblockit.mov/
-  - https://yts.mrunblock.life/
   - https://yts.unblockit.rsvp/
-  - https://yts.nocensor.click/
   - https://yts.unblockit.vegas/
   - https://yts.unblockit.esq/
   - https://yts.unblockit.zip/
@@ -38,6 +32,12 @@ legacylinks:
   - https://yts.mrunblock.bond/
   - https://yts.nocensor.cloud/
   - https://yts.unblockit.date/
+  - https://yts.unblockit.dad/
+  - https://yts.unblockit.africa/
+  - https://yts.unblockit.casa/
+  - https://yts.unblockit.sbs/
+  - https://yts.unblockit.ong/
+  - https://yts.abcproxy.org/
 
 caps:
   categorymappings:

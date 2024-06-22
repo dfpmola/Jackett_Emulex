@@ -27,23 +27,11 @@ namespace Jackett.Common.Indexers
         public override string Id => "mejortorrent";
         public override string Name => "MejorTorrent";
         public override string Description => "MejorTorrent - Hay veces que un torrent viene mejor! :)";
-        public override string SiteLink { get; protected set; } = "https://www12.mejortorrent.rip/";
+        public override string SiteLink { get; protected set; } = "https://www18.mejortorrent.zip/";
         public override string[] LegacySiteLinks => new[]
         {
-            "https://mejortorrent.nocensor.space/",
-            "https://www.mejortorrento.info/",
-            "https://mejortorrent.nocensor.work/",
-            "https://www.mejortorrentes.net/",
-            "https://mejortorrent.nocensor.biz/",
-            "https://www.mejortorrentes.org/",
-            "https://mejortorrent.nocensor.sbs/",
-            "https://mejortorrent.unblockit.bio/",
-            "https://mejortorrent.wtf/",
-            "https://mejortorrent.unblockit.boo/",
             "https://mejortorrent.unblockit.click/",
-            "https://www1.mejortorrent.rip/",
             "https://mejortorrent.unblockit.asia/",
-            "https://www2.mejortorrent.rip/",
             "https://mejortorrent.unblockit.mov/",
             "https://www3.mejortorrent.rip/",
             "https://www4.mejortorrent.rip/",
@@ -59,6 +47,12 @@ namespace Jackett.Common.Indexers
             "https://www9.mejortorrent.rip/",
             "https://www10.mejortorrent.rip/",
             "https://www11.mejortorrent.rip/",
+            "https://www12.mejortorrent.rip/",
+            "https://www13.mejortorrent.rip/",
+            "https://www14.mejortorrent.rip/",
+            "https://www15.mejortorrent.rip/",
+            "https://www16.mejortorrent.rip/",
+            "https://www17.mejortorrent.zip/",
         };
         public override string Language => "es-ES";
         public override string Type => "public";
@@ -381,6 +375,10 @@ namespace Jackett.Common.Indexers
         private ReleaseInfo GenerateRelease(string title, string detailsStr, string downloadLink, string cat,
                                             DateTime publishDate, long size)
         {
+            if (downloadLink.StartsWith("/"))
+            {
+                downloadLink = SiteLink + downloadLink.Substring(1);
+            }
             var link = new Uri(downloadLink);
             var details = new Uri(detailsStr);
             var release = new ReleaseInfo

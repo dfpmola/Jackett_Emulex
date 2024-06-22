@@ -6,7 +6,6 @@ using Jackett.Common.Models;
 using Jackett.Common.Services.Interfaces;
 using Jackett.Common.Utils.Clients;
 using NLog;
-using static Jackett.Common.Models.IndexerConfig.ConfigurationData;
 
 namespace Jackett.Common.Indexers
 {
@@ -18,7 +17,7 @@ namespace Jackett.Common.Indexers
         public override string Description => "Aka AsiaTorrents";
         public override string SiteLink { get; protected set; } = "https://avistaz.to/";
 
-        protected override string TimezoneOffset => "+01:00";
+        protected override string TimezoneOffset => "+02:00";
 
         public override TorznabCapabilities TorznabCaps => SetCapabilities();
 
@@ -30,7 +29,6 @@ namespace Jackett.Common.Indexers
                    p: ps,
                    cs: cs)
         {
-            configData.AddDynamic("Account Inactivity", new DisplayInfoConfigurationItem("Account Inactivity", "To avoid account deletion you must login at least 1 time every 90 days, and you must download at least 1 torrent every 6 months. Simply keeping torrents seeding long term will not protect your account. Do not rely on inactivity emails, we often do not send them."));
         }
 
         private TorznabCapabilities SetCapabilities()

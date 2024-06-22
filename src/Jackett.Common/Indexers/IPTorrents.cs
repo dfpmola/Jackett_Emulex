@@ -75,7 +75,7 @@ namespace Jackett.Common.Indexers
                    logger: l,
                    p: ps,
                    cacheService: cs,
-                   configData: new ConfigurationDataCookieUA("For best results, change the 'Torrents per page' option to 100 and check the 'Torrents - Show files count' option in the website Settings."))
+                   configData: new ConfigurationDataCookieUA("In the website Settings:<ul><li>change the <b>Torrents per page</b> option to <b>100</b></li><li><b>Tick</b> the <b>Torrents - Show files count</b> checkbox</li><li>Set the <b>torrents category column</b> to <b>Icons</b></li></ul>Otherwise the indexer may not return results."))
         {
             var sort = new SingleSelectConfigurationItem("Sort requested from site", new Dictionary<string, string>
                 {
@@ -193,7 +193,7 @@ namespace Jackett.Common.Indexers
         {
             base.LoadValuesFromJson(jsonConfig, useProtectionService);
 
-            webclient?.AddTrustedCertificate(new Uri(SiteLink).Host, "44E390F897BC01083CE3DB0E8266A210735470E3"); // for *.octopus.town  expired 02/Sep/23
+            webclient?.AddTrustedCertificate(new Uri(SiteLink).Host, "1C54573353A97C17DD2344E9E7094848046A8CDA"); // for *.octopus.town  expired 01/Mar/24
         }
 
         public override async Task<IndexerConfigurationStatus> ApplyConfiguration(JToken configJson)
@@ -377,14 +377,14 @@ namespace Jackett.Common.Indexers
 
                     // Torrents - Category column == Text or Code
                     // release.Category = MapTrackerCatDescToNewznab(row.Cq().Find("td:eq(0)").Text()); // Works for "Text" but only contains the parent category
-                    var catIcon = row.QuerySelector("td:nth-of-type(1) a");
+                    var catIcon = row.QuerySelector("td:nth-of-type(1) a[href^=\"?\"]");
                     if (catIcon == null)
                     {
                         throw new Exception("Please, change the 'Torrents - Category column' option to 'Icons' in the website Settings. Wait a minute (cache) and then try again.");
                     }
 
                     // Torrents - Category column == Icons
-                    var cat = MapTrackerCatToNewznab(catIcon.GetAttribute("href").Substring(1));
+                    var cat = MapTrackerCatToNewznab(catIcon.GetAttribute("href")?.Substring(1));
 
                     var size = ParseUtil.GetBytes(row.Children[sizeIndex].TextContent);
 

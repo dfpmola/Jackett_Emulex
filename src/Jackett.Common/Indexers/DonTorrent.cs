@@ -24,13 +24,14 @@ namespace Jackett.Common.Indexers
     public class DonTorrent : IndexerBase
     {
         public override string Id => "dontorrent";
+        public override string[] Replaces => new[] { "todotorrents" };
         public override string Name => "DonTorrent";
         public override string Description => "DonTorrent is a SPANISH public tracker for MOVIES / TV / GENERAL";
         // in the event the redirect is inactive https://t.me/s/dontorrent should have the latest working domain
-        public override string SiteLink { get; protected set; } = "https://dontorrent.cooking/";
+        public override string SiteLink { get; protected set; } = "https://dontorrent.esq/";
         public override string[] AlternativeSiteLinks => new[]
         {
-            "https://dontorrent.cooking/",
+            "https://dontorrent.esq/",
             "https://todotorrents.org/",
             "https://tomadivx.net/",
             "https://seriesblanco.one/",
@@ -39,23 +40,22 @@ namespace Jackett.Common.Indexers
         };
         public override string[] LegacySiteLinks => new[]
         {
-            "https://dontorrent.nexus/",
-            "https://dontorrent.bond/",
-            "https://dontorrent.tokyo/",
-            "https://dontorrent.boston/",
-            "https://dontorrent.rodeo/",
-            "https://dontorrent.durban/",
-            "https://dontorrent.party/",
-            "https://dontorrent.joburg/",
-            "https://dontorrent.wales/",
-            "https://dontorrent.nagoya/",
-            "https://dontorrent.contact/",
-            "https://dontorrent.cymru/",
-            "https://dontorrent.capetown/",
-            "https://dontorrent.yokohama/",
             "https://dontorrent.makeup/",
             "https://dontorrent.band/",
             "https://dontorrent.center/",
+            "https://dontorrent.cooking/",
+            "https://dontorrent.cyou/",
+            "https://dontorrent.agency/",
+            "https://dontorrent.skin/",
+            "https://dontorrent.directory/",
+            "https://dontorrent.boutique/",
+            "https://dontorrent.miami/",
+            "https://dontorrent.business/",
+            "https://dontorrent.clothing/",
+            "https://dontorrent.icu/",
+            "https://dontorrent.fyi/",
+            "https://dontorrent.sbs/",
+            "https://dontorrent.cc/",
         };
         public override string Language => "es-ES";
         public override string Type => "public";
@@ -159,7 +159,7 @@ namespace Jackett.Common.Indexers
         public override async Task<byte[]> Download(Uri link)
         {
             var downloadUrl = link.ToString();
-            if (downloadUrl.Contains("cdn.pizza") || downloadUrl.Contains("blazing.network") || downloadUrl.Contains("tor.cat") || downloadUrl.Contains("cdndelta.com") || downloadUrl.Contains("cdnbeta.in"))
+            if (downloadUrl.Contains("cdn.pizza") || downloadUrl.Contains("blazing.network") || downloadUrl.Contains("tor.cat") || downloadUrl.Contains("cdndelta.com") || downloadUrl.Contains("cdnbeta.in") || downloadUrl.Contains("/torrents/series/"))
             {
                 return await base.Download(link);
             }
@@ -277,8 +277,7 @@ namespace Jackett.Common.Indexers
         private async Task<List<ReleaseInfo>> PerformQuerySearch(TorznabQuery query, bool matchWords)
         {
             var releases = new List<ReleaseInfo>();
-            // search only the longest word, we filter the results later
-            var searchTerm = GetLongestWord(query.SearchTerm);
+            var searchTerm = query.SearchTerm;
             var url = SiteLink + SearchUrl + searchTerm;
             var result = await RequestWithCookiesAsync(url, referer: url);
             if (result.Status != HttpStatusCode.OK)
@@ -737,18 +736,6 @@ namespace Jackett.Common.Indexers
                 .Where(categoryMap => url.Contains(categoryMap.Key))
                 .Select(categoryMap => categoryMap.Value)
                 .FirstOrDefault();
-        }
-
-        private static string GetLongestWord(string text)
-        {
-            var words = text.Split(' ');
-            if (!words.Any())
-                return null;
-            var longestWord = words.First();
-            foreach (var word in words)
-                if (word.Length >= longestWord.Length)
-                    longestWord = word;
-            return longestWord;
         }
 
         private static DateTime TryToParseDate(string dateToParse, DateTime dateDefault)

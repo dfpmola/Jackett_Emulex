@@ -21,6 +21,7 @@ namespace Jackett.Common.Indexers
     public class SpeedCD : IndexerBase
     {
         public override string Id => "speedcd";
+        public override string[] Replaces => new[] { "speedcdcookie" };
         public override string Name => "Speed.cd";
         public override string Description => "Your home now!";
         public override string SiteLink { get; protected set; } = "https://speed.cd/";
@@ -37,8 +38,6 @@ namespace Jackett.Common.Indexers
 
         public override TorznabCapabilities TorznabCaps => SetCapabilities();
 
-        private string LoginUrl1 => SiteLink + "checkpoint/API";
-        private string LoginUrl2 => SiteLink + "checkpoint/";
         private string SearchUrl => SiteLink + "browse/";
 
         private new ConfigurationDataSpeedCD configData => (ConfigurationDataSpeedCD)base.configData;
@@ -51,9 +50,11 @@ namespace Jackett.Common.Indexers
                    p: ps,
                    cacheService: cs,
                    configData: new ConfigurationDataSpeedCD(
-                       @"Speed.Cd have increased their security. If you are having problems please check the security tab
-                    in your Speed.Cd profile. Eg. Geo Locking, your seedbox may be in a different country to the one where you login via your
-                    web browser.<br><br>For best results, change the 'Torrents per page' setting to 100 in 'Profile Settings > Torrents'."))
+                       @"Speed.Cd have increased their security. If you are having problems please check the security tab in your
+                    Speed.Cd profile. Eg. Geo Locking, your seedbox may be in a different country to the one where you login via your
+                    web browser.<br><br>For best results, change the 'Torrents per page' setting to 100 in<br>'Profile Settings > Torrents'.
+                    <br><br>This site may use Cloudflare DDoS Protection, therefore Jackett requires <a
+                    href='https://github.com/Jackett/Jackett#configuring-flaresolverr' target='_blank'>FlareSolverr</a> to access it."))
         {
         }
 
@@ -125,24 +126,38 @@ namespace Jackett.Common.Indexers
         private async Task DoLogin()
         {
             // first request with username
-            var pairs = new Dictionary<string, string>
-            {
-                { "username", configData.Username.Value }
-            };
-            var result = await RequestLoginAndFollowRedirect(LoginUrl1, pairs, null, true, null, SiteLink);
+            var result = await RequestLoginAndFollowRedirect(
+                $"{SiteLink}checkpoint/API",
+                new Dictionary<string, string>
+                {
+                    { "username", configData.Username.Value }
+                },
+                null,
+                true,
+                null,
+                SiteLink);
+
             var tokenRegex = new Regex(@"name=\\""a\\"" value=\\""([^""]+)\\""");
             var matches = tokenRegex.Match(result.ContentString);
             if (!matches.Success)
+            {
                 throw new Exception("Error parsing the login form");
+            }
+
             var token = matches.Groups[1].Value;
 
             // second request with token and password
-            pairs = new Dictionary<string, string>
-            {
-                { "pwd", configData.Password.Value },
-                { "a", token }
-            };
-            result = await RequestLoginAndFollowRedirect(LoginUrl2, pairs, result.Cookies, true, null, SiteLink);
+            result = await RequestLoginAndFollowRedirect(
+                $"{SiteLink}checkpoint/",
+                new Dictionary<string, string>
+                {
+                    { "pwd", configData.Password.Value },
+                    { "a", token }
+                },
+                result.Cookies,
+                true,
+                null,
+                SiteLink);
 
             await ConfigureIfOK(result.Cookies, result.ContentString?.Contains("/browse.php") == true, () =>
             {
@@ -151,7 +166,9 @@ namespace Jackett.Common.Indexers
                 var errorMessage = dom.QuerySelector("h5")?.TextContent;
 
                 if (result.ContentString.Contains("Wrong Captcha!"))
+                {
                     errorMessage = "Captcha required due to a failed login attempt. Login via a browser to whitelist your IP and then reconfigure Jackett.";
+                }
 
                 throw new Exception(errorMessage ?? "Login failed.");
             });
@@ -166,13 +183,19 @@ namespace Jackett.Common.Indexers
 
             var catList = MapTorznabCapsToTrackers(query);
             foreach (var cat in catList)
+            {
                 qc.Add(cat);
+            }
 
             if (configData.Freeleech.Value)
+            {
                 qc.Add("freeleech");
+            }
 
             if (configData.ExcludeArchives.Value)
+            {
                 qc.Add("norar");
+            }
 
             if (query.IsImdbQuery)
             {
@@ -183,7 +206,9 @@ namespace Jackett.Common.Indexers
                     term += $" {query.GetEpisodeSearchString()}";
 
                     if (query.Season > 0 && string.IsNullOrEmpty(query.Episode))
+                    {
                         term += "*";
+                    }
                 }
 
                 qc.Add("deep");
@@ -195,7 +220,9 @@ namespace Jackett.Common.Indexers
                 var term = query.GetQueryString();
 
                 if (!string.IsNullOrWhiteSpace(query.GetEpisodeSearchString()) && query.Season > 0 && string.IsNullOrEmpty(query.Episode))
+                {
                     term += "*";
+                }
 
                 qc.Add("q");
                 qc.Add(WebUtilityHelpers.UrlEncode(term.Trim(), Encoding));
