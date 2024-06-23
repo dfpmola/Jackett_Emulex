@@ -586,7 +586,7 @@ stages:
               title: v$(Build.BuildNumber)
               assets: $(Build.ArtifactStagingDirectory)/drop/*
               assetUploadMode: replace
-              isDraft: true
+              isDraft: false
               addChangeLog: true
               compareWith: lastNonDraftRelease
 
