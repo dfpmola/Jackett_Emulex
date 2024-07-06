@@ -203,14 +203,18 @@ namespace Jackett.Common.Indexers
             var url = "emulex/status/";
             url = new Uri(new Uri(this.SiteLink), url).ToString();
 
-            var result = await RequestWithCookiesAsync(
-                url,
-                headers: new Dictionary<string, string>
-                {
-                    {"X-API-KEY", configData.Key.Value}
-                }
-            );
-            logger.Debug("Logout result: " + result.ContentString);
+            try
+            {
+                var result = await RequestWithCookiesAsync(
+                    url,
+                    headers: new Dictionary<string, string>
+                    {
+                        {"X-API-KEY", configData.Key.Value}
+                    }
+                    );
+                logger.Debug("Logout result: " + result.ContentString);
+
+
 
 
             if (result.Status != HttpStatusCode.OK && (result.Status == HttpStatusCode.ServiceUnavailable || result.Status == HttpStatusCode.Forbidden))
@@ -241,7 +245,12 @@ namespace Jackett.Common.Indexers
             releases.Add(release);
             releases.Add(release2);
 
-
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
             return releases;
         }
 
@@ -259,8 +268,11 @@ namespace Jackett.Common.Indexers
             //Convertimos S01E01 en 0x01
 
 
-            var searchPattern = query.SearchTerm;
+            string epidosode = query.Episode.Length == 1 ? $"0{query.Episode}" : query.Episode;
+            var searchPattern = $"{query.SearchTerm} {query.Season}x{epidosode}" ;
             // Expresión regular para encontrar el patrón S01E01
+
+            /*
             string patronEpisodio = @"S(\d{2})E(\d{2})";
 
             // Buscar el patrón en el texto original
@@ -285,7 +297,7 @@ namespace Jackett.Common.Indexers
             {
                 Console.WriteLine("No se encontró el patrón en el texto original.");
             }
-
+            */
             Encoding iso = Encoding.GetEncoding("ISO-8859-1");
             Encoding utf8 = Encoding.UTF8;
             byte[] utfBytes = utf8.GetBytes(searchPattern);
@@ -346,7 +358,7 @@ namespace Jackett.Common.Indexers
                         title = Regex.Replace(title, @"\b(esp|spa)\b", "Spanish", RegexOptions.IgnoreCase);
 
                         //title = Regex.Replace(title, @"\((\d{4})\.\w+\.?\w*\)", "($1)");
-                       
+
                         title = Regex.Replace(title, @" \((\d{ 4})[^\)] *\)", "($1)");
 
                         //title = Regex.Replace(title, @"\b(Englishsub|)\b", "English.sub", RegexOptions.IgnoreCase);
