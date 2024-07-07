@@ -124,7 +124,6 @@ A third-party Golang SDK for Jackett is available from [webtor-io/go-jackett](ht
  * Torrent9-tel
  * TorrentFunk
  * TorrentDownload
- * TorrentGalaxy (TGx)
  * TorrentKitty
  * TorrentProject2
  * TorrentQQ (토렌트큐큐)
@@ -272,6 +271,7 @@ A third-party Golang SDK for Jackett is available from [webtor-io/go-jackett](ht
  * BiTTuRK
  * BJ-Share (BJ) [![(invite needed)][inviteneeded]](#)
  * BlueBird
+ * BlurayTracker
  * Blutopia (BLU)
  * Borgzelle [![(invite needed)][inviteneeded]](#)
  * Boxing Torrents
@@ -312,6 +312,7 @@ A third-party Golang SDK for Jackett is available from [webtor-io/go-jackett](ht
  * Dark-Shadow
  * Das Unerwartete (D-U)
  * DataScene (DS)
+ * DenOfSimps (DoS)
  * DesiTorrents
  * Diablo Torrent
  * DICMusic [![(invite needed)][inviteneeded]](#)
@@ -345,9 +346,8 @@ A third-party Golang SDK for Jackett is available from [webtor-io/go-jackett](ht
  * FSM
  * FunFile (FF)
  * FunkyTorrents (FT)
- * FutureTorrent [![(invite needed)][inviteneeded]](#)
+ * FutureTorrent
  * Fuzer (FZ)
- * Gamera (駕瞑羅)
  * Gay-Torrents.org
  * GAYtorrent.ru
  * GazelleGames (GGn)
@@ -430,6 +430,7 @@ A third-party Golang SDK for Jackett is available from [webtor-io/go-jackett](ht
  * Le-Cinephile
  * LearnBits
  * LearnFlakes
+ * Leech24
  * Les-Cinephiles
  * Lesbians4u
  * Libble
@@ -444,10 +445,10 @@ A third-party Golang SDK for Jackett is available from [webtor-io/go-jackett](ht
  * Majomparádé (TurkDepo)
  * Making Off
  * Mansão dos Animes (MDAN)
+ * Malayabits
  * MegamixTracker
  * MeseVilág (Fairytale World)
  * MetalGuru [![(invite needed)][inviteneeded]](#)
- * METALWRKS
  * Milkie
  * MMA-Torrents [![(invite needed)][inviteneeded]](#)
  * MNV (Max-New-Vision)
@@ -532,11 +533,9 @@ A third-party Golang SDK for Jackett is available from [webtor-io/go-jackett](ht
  * SFP (Share Friends Projekt)
  * Shadowflow (影) [![(invite needed)][inviteneeded]](#)
  * Shareisland
- * SharkPT
  * Shazbat
  * SiamBIT
  * SkipTheCommercials
- * SkipTheTrailers
  * slosoul
  * SnowPT (SSPT)
  * SoulVoice (聆音Club)

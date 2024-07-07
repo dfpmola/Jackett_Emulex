@@ -411,6 +411,7 @@ namespace Jackett.Updater
                 "Definitions/fusionmayhem.yml",
                 "Definitions/gainbound.yml",
                 "Definitions/galeriens.yml",
+                "Definitions/gamera.yml",
                 "Definitions/gdf76.yml",
                 "Definitions/generationfree.yml", // switch to unit3d api #12982
                 "Definitions/gfxnews.yml",
@@ -497,6 +498,7 @@ namespace Jackett.Updater
                 "Definitions/megabliz.yml",
                 "Definitions/mendigosdaweb.yml",
                 "Definitions/metal-iplay-ro.yml", // renamed to romanianmetaltorrents
+                "Definitions/metalwrks.yml",
                 "Definitions/microbit.yml",
                 "Definitions/mkvcage.yml",
                 "Definitions/moecat.yml",
@@ -600,8 +602,10 @@ namespace Jackett.Updater
                 "Definitions/shareuniversity.yml",
                 "Definitions/sharingue.yml",
                 "Definitions/shellife.yml",
+                "Definitions/sharkpt.yml",
                 "Definitions/shokweb.yml",
                 "Definitions/skipthecommercials.yml", // switch to *-API #8682
+                "Definitions/skipthetrailers.yml",
                 "Definitions/skytorrents-lol.yml",
                 "Definitions/skytorrents-to.yml",
                 "Definitions/skytorrents.yml",
@@ -655,6 +659,7 @@ namespace Jackett.Updater
                 "Definitions/torrentcouch.yml",
                 "Definitions/torrentdb.yml",
                 "Definitions/torrentfactory.yml",
+                "Definitions/torrentgalaxy.yml",
                 "Definitions/torrentgalaxyorg.yml", // renamed to torrentgalaxy
                 "Definitions/torrenthane.yml",
                 "Definitions/torrentkim.yml",
